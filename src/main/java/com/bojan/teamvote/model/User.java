@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,11 +18,16 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	int id;
+	int userId;
 	
 	@Email
 	@NotEmpty
@@ -34,6 +40,14 @@ public class User implements Serializable{
 	@Size(min=3)
 	private String password;
 	
+	@OneToMany(targetEntity=Question.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "questionUser", orphanRemoval = true)
+	@JsonIgnore
+	@Fetch(value = FetchMode.SUBSELECT)
+	List<Question> questions;
+	
+	@ManyToMany(mappedBy="users") 
+	private List<Opinion> opinions;
+	
 	/*
 	// mapped by pokazuje ko je vlasnik
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
@@ -44,7 +58,7 @@ public class User implements Serializable{
 	// drugi gleda polje u detetu
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="USER_ROLES", joinColumns= {
-			@JoinColumn(name="USER_EMAIL", referencedColumnName="email")
+			@JoinColumn(name="USER_ID", referencedColumnName="userId")
 	}, inverseJoinColumns= {
 			@JoinColumn(name="ROLE_EMAIL", referencedColumnName="name")
 	})
@@ -107,5 +121,31 @@ public class User implements Serializable{
 		this.email = email;
 		this.name = name;
 		this.password = password;
+	}
+
+
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public List<Opinion> getOpinions() {
+		return opinions;
+	}
+
+	public void setOpinions(List<Opinion> opinions) {
+		this.opinions = opinions;
 	}
 }

@@ -24,7 +24,15 @@ public class UserService {
 	@Autowired
 	RoleDao roleDao;
 
-	public void createUser(User user) {
+	public User findById(int id) {
+		return userDao.findById(id).get();
+	}
+	
+	public List<User> findAll() {
+		return userDao.findAll();
+	}
+	
+	public void addUser(User user) {
 		BCryptPasswordEncoder  encoder = new  BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(user.getPassword())); 
 		Role userRole = new Role("USER");
@@ -34,7 +42,7 @@ public class UserService {
 		userDao.save(user);		
 	}
 
-	public void createAdmin(User user) {
+	public void addAdmin(User user) {
 		BCryptPasswordEncoder  encoder = new  BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(user.getPassword())); 
 		Role userRole = new Role("ADMIN");
@@ -42,5 +50,9 @@ public class UserService {
 		roles.add(userRole);
 		user.setRoles(roles);
 		userDao.save(user);
+	}
+	
+	public User updateUser(User user) {
+		return userDao.save(user);
 	}
 }
