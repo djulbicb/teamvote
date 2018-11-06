@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	data-layout-decorate="~{fragments/main}">
+<head>
+<html>
+<head>
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div data-layout-fragment="content">
+		<div class="row justify-content-center">
+		
+			<div class="col-8 border rounded shadow mt-4 p-4 bg-light">
+				<div class="alert alert-danger" th:if="${param.error}">
+					<h2>Invalid Email or Password</h2>
+				</div>
+				
+				<div class="alert alert-dismissible alert-light" th:if="${msg}">
+					<h2 th:text="${msg}">Text</h2>
+				</div>
+				<h1 class="display-4">Login:</h1>
+				<hr>
+				<form th:action="@{/login}"  method="post">
+
+					<div class="form-group">
+						<label for="email" class="form-control-label">Email</label> <input
+							type="text" class="form-control shadow-sm" id="email" name="username" />
+
+					</div>
+					<div class="form-group">
+						<label for="password" class="form-control-label">Password</label>
+						<input type="password" class="form-control shadow-sm" id="password"
+							name="password" />
+
+
+					</div>
+
+					<input type="submit" value="Submit" class="btn btn-primary shadow-sm" />
+
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+</body>
+</html>

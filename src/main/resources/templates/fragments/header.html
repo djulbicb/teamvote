@@ -1,8 +1,9 @@
+
 <header th:fragment="header">
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm border-bottom border-light">
 	<div class="container">
-		<a class="navbar-brand" href="#">App</a>
+		<a class="border rounded pr-2 pl-2 navbar-brand" href="#"><i class="fa fa-comments mr-2" aria-hidden="true"></i>TeamVote</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarColor01" aria-controls="navbarColor01"
 			aria-expanded="false" aria-label="Toggle navigation">
@@ -11,18 +12,18 @@
 
 		<div class="collapse navbar-collapse" id="navbarColor01">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="#">Home
+				<li class="nav-item active"><a class="nav-link" href="/">Home
 						<span class="sr-only">(current)</span>
 				</a></li>
-				<li class="nav-item"><a class="nav-link" sec:authorize="!isAuthenticated()" href="/app/register">Register</a>
+				<li class="nav-item"><a class="nav-link" sec:authorize="!isAuthenticated()" href="/register">Register</a>
 				</li>
-				<li class="nav-item"><a class="nav-link" sec:authorize="!isAuthenticated()" href="/app/login">Login</a></li>
-				<li class="nav-item"><a class="nav-link" sec:authorize="isAuthenticated()" href="/app/profile">Profile</a></li>
-				<li class="nav-item"><a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" href="/app/users">Users</a></li>
+				<li class="nav-item"><a class="nav-link" sec:authorize="!isAuthenticated()" href="/login">Login</a></li>
+				<li class="nav-item"><a class="nav-link" sec:authorize="isAuthenticated()" href="/profile">Profile</a></li>
+				<li class="nav-item"><a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" href="/users">Users</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">Logout</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">About</a></li>
 			</ul>
-			<form class="form-inline my-2 my-lg-0" th:action="@{/app/logout}" method="post" sec:authorize="isAuthenticated()"> 
+			<form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()"> 
 				<input class="form-control mr-sm-2" type="hidden" />
 				<button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
 			</form>

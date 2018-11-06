@@ -47,18 +47,10 @@ public class User implements Serializable{
 	
 	@ManyToMany(mappedBy="users") 
 	private List<Opinion> opinions;
-	
-	/*
-	// mapped by pokazuje ko je vlasnik
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
-	private List<Task> tasks;
-	*/
-	
-	// ovaj prvi gleda gore property email i kreira kolonu
-	// drugi gleda polje u detetu
+		
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="USER_ROLES", joinColumns= {
-			@JoinColumn(name="USER_ID", referencedColumnName="userId")
+			@JoinColumn(name="USER_EMAIL", referencedColumnName="email")
 	}, inverseJoinColumns= {
 			@JoinColumn(name="ROLE_EMAIL", referencedColumnName="name")
 	})
