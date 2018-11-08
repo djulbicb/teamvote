@@ -56,6 +56,19 @@ public class User implements Serializable{
 	})
 	private List<Role> roles;
 
+	@OneToMany(targetEntity=Team.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
+	@Fetch(value = FetchMode.SUBSELECT)
+	List<Team> ownsTeams;
+	
+	@ManyToMany(cascade=CascadeType.ALL)
+	@JoinTable(name="USER_TEAM", joinColumns= {
+			@JoinColumn(name="USER_ID", referencedColumnName="userId")
+	}, inverseJoinColumns= {
+			@JoinColumn(name="TEAM_ID", referencedColumnName="teamId")
+	})
+	private List<Team> belongsTeams;
+	
+	
 	public String getEmail() {
 		return email;
 	}
@@ -139,5 +152,21 @@ public class User implements Serializable{
 
 	public void setOpinions(List<Opinion> opinions) {
 		this.opinions = opinions;
+	}
+
+	public List<Team> getOwnsTeams() {
+		return ownsTeams;
+	}
+
+	public void setOwnsTeams(List<Team> ownsTeams) {
+		this.ownsTeams = ownsTeams;
+	}
+
+	public List<Team> getBelongsTeams() {
+		return belongsTeams;
+	}
+
+	public void setBelongsTeams(List<Team> belongsTeams) {
+		this.belongsTeams = belongsTeams;
 	}
 }

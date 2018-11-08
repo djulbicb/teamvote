@@ -23,7 +23,7 @@ public class Opinion {
 	
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JsonIgnore
-	@JoinTable(name="OPTION_USER", joinColumns= {
+	@JoinTable(name="OPINION_USER", joinColumns= {
 			@JoinColumn(name="OPINION_ID", referencedColumnName="opinionId")
 	}, inverseJoinColumns= {
 			@JoinColumn(name="USER_ID", referencedColumnName="userId")
