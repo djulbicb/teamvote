@@ -6,7 +6,6 @@ Java, SpringBoot, Thymeleaf, Bootstrap, Hibernate, MySQL, JQuery | Editor used: 
 A prototype of a team voting web app
 
 ## Current TODO list
-* Add webjars dependencies
 * Create question
 * Create option
 * Create team
@@ -16,7 +15,7 @@ A prototype of a team voting web app
 * IndexController
 * login/register page
 * Spring Security
-* Creating model entities, added team
+* Creating model entities
 * JUnit test for creating initial user repository
 
 
