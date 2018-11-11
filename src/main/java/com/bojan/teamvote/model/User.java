@@ -1,5 +1,6 @@
 package com.bojan.teamvote.model;
 
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,12 +15,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -37,8 +41,19 @@ public class User implements Serializable{
 	@NotEmpty
 	private String name;
 	
+	@NotEmpty
+	private String firstName;
+	
+	@NotEmpty
+	private String lastName;
+	
 	@Size(min=3)
 	private String password;
+	
+	@Transient
+	private MultipartFile avatarImage;
+	
+	private String avatar;
 	
 	@OneToMany(targetEntity=Question.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "questionUser", orphanRemoval = true)
 	@JsonIgnore
@@ -168,5 +183,47 @@ public class User implements Serializable{
 
 	public void setBelongsTeams(List<Team> belongsTeams) {
 		this.belongsTeams = belongsTeams;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public User(@Email @NotEmpty String email, @NotEmpty String name, @NotEmpty String firstName,
+			@NotEmpty String lastName, @Size(min = 3) String password) {
+		super();
+		this.email = email;
+		this.name = name;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+	}
+
+	public MultipartFile getAvatarImage() {
+		return avatarImage;
+	}
+
+	public void setAvatarImage(MultipartFile avatarImage) {
+		this.avatarImage = avatarImage;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 }

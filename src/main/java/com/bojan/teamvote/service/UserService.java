@@ -37,7 +37,7 @@ public class UserService {
 		BCryptPasswordEncoder  encoder = new  BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(user.getPassword())); 
 		
-		//Role userRole = new Role("USER");
+		Role userRole = new Role("USER");
 		Role role = roleDao.findById("USER").get();
 		List<Role> roles = new ArrayList<>();
 		roles.add(role);
@@ -48,7 +48,7 @@ public class UserService {
 	public void addAdmin(User user) {
 		BCryptPasswordEncoder  encoder = new  BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(user.getPassword())); 
-		//Role userRole = new Role("ADMIN");
+		Role userRole = new Role("ADMIN");
 		Role role = roleDao.findById("ADMIN").get();
 		List<Role> roles = new ArrayList<>();
 		roles.add(role);
@@ -58,5 +58,13 @@ public class UserService {
 	
 	public User updateUser(User user) {
 		return userDao.save(user);
+	}
+	
+	public boolean ifExistsByName(String username) {
+		return userDao.ifExistsByName(username);
+	}
+	
+	public boolean ifExistsByEmail(String email) {
+		return userDao.ifExistsByEmail(email);
 	}
 }

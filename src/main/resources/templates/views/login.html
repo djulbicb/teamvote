@@ -13,14 +13,18 @@
 		<div class="row justify-content-center">
 		
 			<div class="col-8 border rounded shadow mt-4 p-4 bg-light">
-				<div class="alert alert-danger" th:if="${param.error}">
-					<h2>Invalid Email or Password</h2>
-				</div>
+					<div class="alert alert-dismissible alert-light mb-0"  data-th-if="${param.error}">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <strong>Error:</strong> <span>Invalid Email or Password</span>
+					</div>
+							
+					<div class="alert alert-dismissible alert-light mb-0"  data-th-if="${msg}">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <strong>Success:</strong> <span th:text="${msg}"></span>
+					</div>
 				
-				<div class="alert alert-dismissible alert-light" th:if="${msg}">
-					<h2 th:text="${msg}">Text</h2>
-				</div>
-				<h1 class="display-4">Login:</h1>
+				<h1 class="display-4 m-0 text-center">Login</h1>
+				<p class="lead mt-0 text-center">Enter credentials to login</p>
 				<hr>
 				<form th:action="@{/login}"  method="post">
 
@@ -37,7 +41,18 @@
 
 					</div>
 
+					<!-- Submit button -->
+					 <div class="form-group mb-1 shadow-sm">		
+						<div class="btn-group btn-group-justified d-flex" role="group" aria-label="Basic example">
+							  <input type="submit" value="Login" class="btn p-2 btn-primary w-100"/>
+							  <a href="/register" class="btn btn-secondary p-2 w-100">Register</a>
+						</div>
+					</div>
+					<!--END: Submit button -->
+
+<!-- 
 					<input type="submit" value="Submit" class="btn btn-primary shadow-sm" />
+					 -->
 
 				</form>
 			</div>

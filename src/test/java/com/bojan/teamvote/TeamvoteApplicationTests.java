@@ -17,6 +17,7 @@ import com.bojan.teamvote.model.Question;
 import com.bojan.teamvote.model.Role;
 import com.bojan.teamvote.model.User;
 import com.bojan.teamvote.service.QuestionService;
+import com.bojan.teamvote.service.RoleService;
 import com.bojan.teamvote.service.UserService;
 
 @RunWith(SpringRunner.class)
@@ -29,15 +30,33 @@ public class TeamvoteApplicationTests {
 	@Autowired
 	QuestionService questionService;
 	
+	@Autowired
+	RoleService roleService;
 	
 
 	@Test
+	public void checkIfExists() {
+		boolean ifExistsByEmail = userService.ifExistsByEmail("admin@gmail.com");
+		boolean ifExistsByName = userService.ifExistsByName("admin");
+		
+		System.out.println(ifExistsByEmail);
+		System.out.println(ifExistsByName);
+	}
+	
+	@Test
 	public void initDb() {
+		{
+			roleService.addRole("USER");
+			roleService.addRole("ADMIN");
+		}
+		
 		{
 			User user = new User();
 			user.setName("admin");
 			user.setPassword("1234");
 			user.setEmail("admin@gmail.com");
+			user.setFirstName("Admin");
+			user.setLastName("Adminic");
 			userService.addAdmin(user);
 		}
 
@@ -46,6 +65,8 @@ public class TeamvoteApplicationTests {
 			user.setName("user");
 			user.setPassword("1234");
 			user.setEmail("user@gmail.com");
+			user.setFirstName("User");
+			user.setLastName("Useric");
 			userService.addUser(user);
 		}
 	}
