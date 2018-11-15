@@ -31,7 +31,7 @@ public class Question implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	int questionId;
 	
-	@NotEmpty(message = "You must enter a product description.")
+	@NotEmpty(message = "You must enter a question description.")
 	@Length(max=2048, message="Description cant be longer than 2048 characters")
 	@Column(length=2048)
 	String text;

@@ -67,4 +67,9 @@ public class UserService {
 	public boolean ifExistsByEmail(String email) {
 		return userDao.ifExistsByEmail(email);
 	}
+
+	public User findByEmail(String email) {
+		return userDao.findByEmail(email);
+		
+	}
 }
