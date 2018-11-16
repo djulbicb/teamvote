@@ -72,4 +72,14 @@ public class UserService {
 		return userDao.findByEmail(email);
 		
 	}
+
+	public List<User> findUsers(String firstName){
+		return userDao.findByFirstNameLike(firstName);
+	}
+	
+	public List<User> findUsersByFilters(String email, String firstName, String lastName) {
+		List<User> users = userDao.findUsersByFilters(email, firstName, lastName);
+		System.out.println(users);
+		return users;
+	}
 }

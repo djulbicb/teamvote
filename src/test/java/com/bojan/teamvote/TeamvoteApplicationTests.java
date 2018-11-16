@@ -33,7 +33,6 @@ public class TeamvoteApplicationTests {
 	@Autowired
 	RoleService roleService;
 	
-
 	@Test
 	public void checkIfExists() {
 		boolean ifExistsByEmail = userService.ifExistsByEmail("admin@gmail.com");

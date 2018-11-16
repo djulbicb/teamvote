@@ -48,6 +48,7 @@ public class User implements Serializable{
 	private String lastName;
 	
 	@Size(min=3)
+	@JsonIgnore
 	private String password;
 	
 	@Transient
@@ -61,9 +62,11 @@ public class User implements Serializable{
 	List<Question> questions;
 	
 	@ManyToMany(mappedBy="users") 
+	@JsonIgnore
 	private List<Opinion> opinions;
 		
 	@ManyToMany(cascade=CascadeType.ALL)
+	@JsonIgnore
 	@JoinTable(name="USER_ROLES", joinColumns= {
 			@JoinColumn(name="USER_EMAIL", referencedColumnName="email")
 	}, inverseJoinColumns= {
@@ -72,10 +75,12 @@ public class User implements Serializable{
 	private List<Role> roles;
 
 	@OneToMany(targetEntity=Team.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
+	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
 	List<Team> ownsTeams;
 	
 	@ManyToMany(cascade=CascadeType.ALL)
+	@JsonIgnore
 	@JoinTable(name="USER_TEAM", joinColumns= {
 			@JoinColumn(name="USER_ID", referencedColumnName="userId")
 	}, inverseJoinColumns= {

@@ -24,11 +24,9 @@
 			th:object="${request}">
 			<div class="card border-primary border-light shadow">
 				<div class="card-header">
-					<input class="form-control invisible-form-control"
-						required="required" placeholder="Type your question here*"
-						th:field="*{text}" /> <small id="optionError"
-						class="text text-danger" th:if="${#fields.hasErrors('text')}"
-						th:errors="*{text}"></small>
+					<input class="form-control invisible-form-control" required="required" placeholder="Type your question here*"
+						th:field="*{text}" /> 
+
 				</div>
 
 

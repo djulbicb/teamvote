@@ -51,3 +51,7 @@ body {
 .well .list-group {
     margin-bottom: 0px;
 }
+
+.list-group-item:hover {
+    background-color: #f5f5f5;
+}

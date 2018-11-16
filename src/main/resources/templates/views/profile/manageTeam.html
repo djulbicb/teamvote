@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	data-layout-decorate="~{fragments/main}">
+<head>
+<html>
+<head>
+<title>Register</title>
+
+</head>
+<body>
+
+	<div data-layout-fragment="content">
+
+
+		<div class="pricing-header px-3 pt-md-5 pb-md-4 mx-auto text-center">
+			<h1 class="display-4">Create teams</h1>
+			<p class="lead">Use first table to browse and pick for users and
+				add it team members table.</p>
+		</div>
+
+<form th:action="@{/profile/addTeam}" method="post" th:object="${request}">
+		<div class="bg-light rounded shadow p-2">
+
+			<div class="row">
+				<div class="col">
+					<div class="form-group mb-0 small text-muted text-center">
+						<label class="mb-0" for="exampleInputEmail1">Search by
+							email</label> 
+							<input type="text" class="form-control mb-0 findUsersByFilters" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+					</div>
+				</div>
+
+				<div class="col">
+					<div class="form-group mb-0 small text-muted text-center">
+						<label class="mb-0" for="exampleInputEmail1">Search by
+							first name</label> 
+							<input type="text" class="form-control mb-0 findUsersByFilters" id="firstName" aria-describedby="emailHelp" placeholder="First name">
+					</div>
+				</div>
+
+				<div class="col">
+					<div class="form-group mb-0 small text-muted text-center">
+						<label class="mb-0" for="exampleInputEmail1">Search by
+							last name</label> 
+							<input type="text" class="form-control mb-0 findUsersByFilters" id="lastName" aria-describedby="emailHelp"
+							placeholder="Last name">
+					</div>
+				</div>
+			</div>
+
+			<hr class="mb-2">
+			<div class="row">
+
+				<div class="col">
+					<div class="form-group">
+						<label class="lead" for="exampleFormControlSelect1">Users by filter: </label> 
+						<button type="button" id="addMember" class="small btn btn-sm btn-primary">Add selected users to team</button>
+						 
+							<select class="p-1 form-control" id="filterUsersListbox" multiple="multiple" size="15">
+							<!--  <option>1</option> -->
+							
+						</select>
+					</div>
+				</div>
+
+				<div class="col">
+					<div class="form-group ">
+							<label class="lead" for="exampleFormControlSelect1">Team members</label> 
+			 			<small id="optionError" class="text text-danger" th:if="${#fields.hasErrors('memberEmails')}" th:errors="*{memberEmails}"></small>
+						<div id="members" class="p-1 list-group">
+						
+						<th:block th:each="memberEmail : ${request.memberEmails}">
+      <input name='memberEmails' th:id="'id-' + ${memberEmail}" th:value='${memberEmail}' class='list-group-item text-left p-1' readonly onclick='removeMember(event)'/>
+   </th:block>
+							
+							<!--  <input name='memberEmails' class='list-group-item text-left p-1' value='H' readonly onclick='removeMember(event)'/> -->
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<hr />
+
+				<small id="optionError" class="text text-danger" th:if="${#fields.hasErrors('teamName')}" th:errors="*{teamName}"></small>			 
+			<div class="input-group">
+				
+				<input type="text" id="in" class="form-control" 
+					placeholder="Type the name of the team" th:field="*{teamName}"
+					aria-label="Recipient's username" aria-describedby="basic-addon2" />
+				<div class="input-group-append">
+					<input class="btn btn-secondary" type="submit" value="Create team"/>
+				</div>
+
+			</div>
+
+		</div>
+</form>
+
+		<script type="text/javascript">
+		// 'click' 'change' 'keyup'
+		
+		$( document ).ready(function() {
+			$('#addMember').on('click', function(event){
+				addMember();
+			});
+		});
+		
+		
+		$('.findUsersByFilters').on('change',	function(event) {
+					//var cartItemId = $(this).attr('data-cartItem-id');
+					//var btnClicked = $(this);
+						
+					var email = $('#email').val();
+					var firstName = $('#firstName').val();
+					var lastName = $('#lastName').val();
+					
+					if(email.trim().length == 0 &&
+							   firstName.trim().length === 0 &&
+							   lastName.trim().length === 0
+							){
+								var listBox = $('#filterUsersListbox');
+								listBox.empty();
+								return;
+							}
+
+					$.ajax({
+						type : "POST",
+						dataType : "json",
+						url : "http://localhost:8080/rest/findUsersByFilters",
+						data:{
+							'email':email,
+							'firstName':firstName,
+							'lastName':lastName
+						},
+						dataType : "text",
+						success : function(data) {
+							console.log(data);
+							var listBox = $('#filterUsersListbox');
+							listBox.empty();
+							
+							// turn JSON into object array
+							
+							var array = JSON.parse(data);
+							
+							
+							
+							for(var i = 0; i <= array.length -1; i++){
+								var item = array[i];
+								console.log(item);
+								listBox.append("<option data-email='" + item.email + "'>" + item.firstName + " " + item.lastName + ' | ' + item.email + "</option>");
+							}
+							
+							;
+							
+						}
+					});
+					
+				});
+		
+		function addMember(){
+			console.log('Add');
+			 $('#filterUsersListbox :selected').each(function(i, selected){ 
+			        var email= $(selected).attr('data-email'); 
+			        
+			        var id = "id-" + email;
+			        
+			        var members = $("#members");
+					var customDiv = $("<input name='memberEmails' th:field='*{memberEmails}' class='list-group-item text-left p-1' readonly onclick='removeMember(event)'/>");
+					customDiv.val(email);
+					customDiv.attr('id',id);
+					
+					if (document.getElementById(id)) {					
+						} else {
+							members.append(customDiv);
+						}
+					
+					
+					
+					
+					
+						
+					
+					
+
+			 });
+			 
+			
+		}
+		
+		function removeMember(event){
+			$(event.target).remove();
+		}
+		</script>
+
+
+
+	</div>
+</body>
+</html>
