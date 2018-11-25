@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
@@ -36,22 +37,27 @@ public class Question implements Serializable{
 	@Column(length=2048)
 	String text;
 	
-
 	@ManyToOne(fetch=FetchType.EAGER,   cascade = CascadeType.REFRESH, targetEntity=User.class)	
 	@JoinColumn(name="fk_quest_user")
 	@JsonIgnore
 	User questionUser;
 
+	/*
+	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.REFRESH, targetEntity=User.class)	
+	@JoinColumn(name="fk_quest_voters")
+	@JsonIgnore
+	List<User> voters;
+	*/
+	
 	@OneToMany(targetEntity=Opinion.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "question", orphanRemoval = true)
 	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
 	List<Opinion> opinion;
 
-//	
 	@Column(name = "timestamp", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	Timestamp timestamp;
 
-
+	boolean isPublic;
 
 	public String getText() {
 		return text;
@@ -98,6 +104,14 @@ public class Question implements Serializable{
 
 	public void setOpinion(List<Opinion> opinion) {
 		this.opinion = opinion;
+	}
+
+	public boolean isPublic() {
+		return isPublic;
+	}
+
+	public void setPublic(boolean isPublic) {
+		this.isPublic = isPublic;
 	}
 
 }

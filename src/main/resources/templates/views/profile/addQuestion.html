@@ -11,8 +11,8 @@
 <body>
 
 	<div data-layout-fragment="content">
-	
-	
+
+
 		<div class="pricing-header px-3 pt-md-5 pb-md-4 mx-auto text-center">
 			<h1 class="display-4">Create a question</h1>
 			<p class="lead">In field below define your question, answers and
@@ -22,10 +22,12 @@
 
 		<form th:action="@{/profile/addQuestion}" method="post"
 			th:object="${request}">
+
 			<div class="card border-primary border-light shadow">
 				<div class="card-header">
-					<input class="form-control invisible-form-control" required="required" placeholder="Type your question here*"
-						th:field="*{text}" /> 
+					<input class="form-control invisible-form-control"
+						required="required" placeholder="Type your question here*"
+						th:field="*{text}" />
 
 				</div>
 
@@ -50,20 +52,60 @@
 						th:errors="*{optionParams}"></small>
 				</div>
 
-				<div class="px-3">
+				
+				<div class="px-3 mb-2">
 					<div class="btn-group d-flex">
 						<a href="/profile" class="w-100 btn btn-outline-secondary">Cancel</a>
 						<input type="submit" class="w-100 btn btn-secondary"
 							value="Create question" />
 
 					</div>
-
 				</div>
 
-				<div id="options" class="p-2 text-center">
-					<small id="optionInfo" class="text-muted mb-1 d-block">Click
-						on option to delete</small>
+				<!-- Check boxes -->
+				
+				<div class="row px-3">
+				<div class="col">
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="checkbox" th:field="*{isPublic}" onclick="disablePublic()" id="chkPublic">
+						  <label class="form-check-label small text-muted" for="inlineCheckbox1" >Make question public</label>
+						</div>
+					
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="checkbox" th:field="*{isForEachTeam}" id="chkTeams" onclick="disableTeam()">
+						  <label class="form-check-label small text-muted" for="inlineCheckbox1">Assign question to each team individually</label>
+						</div>
+						</div>
 				</div>
+						
+				<!-- END: Check boxes -->
+				
+				<!-- Options -->
+				
+				<div id="options" class="px-2 text-center">
+					<span id="optionInfo" class="text-muted d-block">Click on option to delete</span>
+				</div>
+
+				<!-- END: Options -->
+
+				<!-- User register -->
+				<div id="teamSelectionDiv">
+					<div class="card-header text-muted">Select team you want to
+						ask</div>
+	
+					<div class="row p-3">
+						<div class="col">
+							<div class="form-group">
+								<select name="" id="teamSelection" multiple="multiple" class="form-control" th:field="*{teams}" size="10">
+									<option th:value="${team.teamId}" th:each="team : ${teams}"
+										th:text="${team.title}" name='teams'>Hello</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END: User register -->
+
 
 
 			</div>
@@ -76,24 +118,23 @@
 			$(document).ready(function(event) {
 				console.log("ready!");
 				$('#optionInfo').css("visibility", "hidden");
-				
+
 				/*
-				* Binding enter key to keyup, and prevent form enter key presed
-				*/
-				$(window).keydown(function(event){
-				    if(event.keyCode == 13) {
-				      event.preventDefault();
-				      return false;
-				    }
-				  });
-				
-				$('#in').keyup(function(event){
-				    if(event.keyCode == 13)
-				    {
-				    	clicked();
-				    }
+				 * Binding enter key to keyup, and prevent form enter key presed
+				 */
+				$(window).keydown(function(event) {
+					if (event.keyCode == 13) {
+						event.preventDefault();
+						return false;
+					}
 				});
-				
+
+				$('#in').keyup(function(event) {
+					if (event.keyCode == 13) {
+						clicked();
+					}
+				});
+
 			});
 
 			function clicked() {
@@ -128,10 +169,36 @@
 				}
 			}
 			
+			var chkPublic = 1;
+			function disablePublic(){
+				if(chkPublic === 1){
+					$("#chkTeams").prop("disabled", true );
+					$("#teamSelection").hide();
+					$("#teamSelection").prop("disabled", true );
+					$("#teamSelectionDiv").hide();
+					chkPublic *= -1;
+				} else{
+					$("#chkTeams").prop("disabled", false );
+					$("#teamSelection").prop("disabled", false );
+					$("#teamSelectionDiv").show();
+					$("#teamSelection").show();
+					chkPublic *= -1;
+				}		
+			}
 			
+			var chkTeam = 1;
+			function disableTeam(){
+				if(chkTeam === 1){
+					$("#chkPublic").prop("disabled", true );
+					chkTeam  *= -1;
+				} else{
+					$("#chkPublic").prop("disabled", false );
+					chkTeam  *= -1;
+				}
+			}
 		</script>
 
-
+<br>
 	</div>
 </body>
 </html>
