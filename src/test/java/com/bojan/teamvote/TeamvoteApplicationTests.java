@@ -75,7 +75,7 @@ public class TeamvoteApplicationTests {
 		Question q = new Question();
 		q.setText("This is question 1");
 		User questionUser = userService.findById(1);
-		q.setQuestionUser(questionUser);
+		q.setOwner(questionUser);
 
 		List<Opinion> opinion = new ArrayList<>();
 
@@ -97,12 +97,12 @@ public class TeamvoteApplicationTests {
 
 		opinion.add(op1);
 		opinion.add(op2);
-		q.setOpinion(opinion);
+		q.setOpinions(opinion);
 
 		
 		List<Question> questions = new ArrayList<>();
 		questions.add(q);
-		questionUser.setQuestions(questions );
+		questionUser.setAskQuestions(questions );
 		userService.updateUser(questionUser);
 	}
 

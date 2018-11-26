@@ -26,8 +26,7 @@
 			<div class="card border-primary border-light shadow">
 				<div class="card-header">
 					<input class="form-control invisible-form-control"
-						required="required" placeholder="Type your question here*"
-						th:field="*{text}" />
+						required="required" placeholder="Type your question here*" th:field="*{text}" />
 
 				</div>
 
@@ -65,17 +64,22 @@
 				<!-- Check boxes -->
 				
 				<div class="row px-3">
-				<div class="col">
-						<div class="form-check form-check-inline">
-						  <input class="form-check-input" type="checkbox" th:field="*{isPublic}" onclick="disablePublic()" id="chkPublic">
-						  <label class="form-check-label small text-muted" for="inlineCheckbox1" >Make question public</label>
-						</div>
-					
-						<div class="form-check form-check-inline">
-						  <input class="form-check-input" type="checkbox" th:field="*{isForEachTeam}" id="chkTeams" onclick="disableTeam()">
-						  <label class="form-check-label small text-muted" for="inlineCheckbox1">Assign question to each team individually</label>
-						</div>
-						</div>
+					<div class="col">
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" type="checkbox" th:field="*{isPublic}" name="isPublic" onclick="disablePublic()" id="chkPublic"/>
+							  <label class="form-check-label small text-muted" for="chkPublic" >Make question public</label>
+							</div>
+						
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" type="checkbox" th:field="*{isForEachTeam}" name="isForEachTeam" id="chkTeams" onclick="disableTeam()" th:checked="${isForEachTeam}"/>
+							  <label class="form-check-label small text-muted" for="chkTeams">Assign question to each team individually</label>
+							</div>
+							
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" type="checkbox" th:field="*{isIncludeMe}" id="chkIncludeMe" name="isIncludeMe"/>
+							  <label class="form-check-label small text-muted" for="chkIncludeMe">Add me as a voter</label>
+							</div>
+					</div>
 				</div>
 						
 				<!-- END: Check boxes -->
@@ -176,12 +180,15 @@
 					$("#teamSelection").hide();
 					$("#teamSelection").prop("disabled", true );
 					$("#teamSelectionDiv").hide();
+					$("#chkIncludeMe").prop("disabled", true );
+					
 					chkPublic *= -1;
 				} else{
 					$("#chkTeams").prop("disabled", false );
 					$("#teamSelection").prop("disabled", false );
 					$("#teamSelectionDiv").show();
 					$("#teamSelection").show();
+					$("#chkIncludeMe").prop("disabled", false);
 					chkPublic *= -1;
 				}		
 			}

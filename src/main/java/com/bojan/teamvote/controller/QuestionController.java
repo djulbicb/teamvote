@@ -36,7 +36,7 @@ public class QuestionController {
 	@GetMapping("showAskedQuestions")
 	public String getShowAskedQuestions(Model model, Principal principal) {
 		User user = userService.findByEmail(principal.getName());
-		model.addAttribute("questions", user.getQuestions());
+		model.addAttribute("questions", user.getAskQuestions());
 		return "views/profile/showAskedQuestions";
 	}
 
@@ -46,6 +46,7 @@ public class QuestionController {
 		User user = userService.findByEmail(principal.getName());
 
 		AddQuestionDto request = new AddQuestionDto();
+
 		model.addAttribute("request", request);
 		model.addAttribute("teams", user.getOwnsTeams());
 
@@ -79,6 +80,7 @@ public class QuestionController {
 		System.out.println(user);
 		System.out.println(request);
 
+		
 		if (request.getIsPublic()) {
 			questionService.addPublicQuestion(request, user);
 		} else if (request.getIsForEachTeam()) {

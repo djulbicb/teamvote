@@ -1,6 +1,5 @@
 package com.bojan.teamvote.model;
 
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,66 +27,62 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class User implements Serializable{
+public class User implements Serializable {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int userId;
-	
+
 	@Email
 	@NotEmpty
-	@Column(unique=true)
+	@Column(unique = true)
 	private String email;
-	
+
 	@NotEmpty
 	private String name;
-	
+
 	@NotEmpty
 	private String firstName;
-	
+
 	@NotEmpty
 	private String lastName;
-	
-	@Size(min=3)
+
+	@Size(min = 3)
 	@JsonIgnore
 	private String password;
-	
+
 	@Transient
 	private MultipartFile avatarImage;
-	
+
 	private String avatar;
-	
-	@OneToMany(targetEntity=Question.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "questionUser", orphanRemoval = true)
+
+	@OneToMany(targetEntity = Question.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
 	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
-	List<Question> questions;
-	
-	@ManyToMany(mappedBy="users") 
+	List<Question> askQuestions;
+
+	@ManyToMany(mappedBy = "voters")
+	@JsonIgnore
+	private List<Question> voteQuestions;
+
+	@ManyToMany(mappedBy = "users")
 	@JsonIgnore
 	private List<Opinion> opinions;
-		
-	@ManyToMany(cascade=CascadeType.ALL)
+
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
-	@JoinTable(name="USER_ROLES", joinColumns= {
-			@JoinColumn(name="USER_EMAIL", referencedColumnName="email")
-	}, inverseJoinColumns= {
-			@JoinColumn(name="ROLE_EMAIL", referencedColumnName="name")
-	})
+	@JoinTable(name = "USER_ROLES", joinColumns = { @JoinColumn(name = "USER_EMAIL", referencedColumnName = "email") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_EMAIL", referencedColumnName = "name") })
 	private List<Role> roles;
 
-	@OneToMany(targetEntity=Team.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
+	@OneToMany(targetEntity = Team.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
 	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
 	List<Team> ownsTeams;
-	
-	@ManyToMany(cascade=CascadeType.ALL)
+
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
-	@JoinTable(name="USER_TEAM", joinColumns= {
-			@JoinColumn(name="USER_ID", referencedColumnName="userId")
-	}, inverseJoinColumns= {
-			@JoinColumn(name="TEAM_ID", referencedColumnName="teamId")
-	})
+	@JoinTable(name = "USER_TEAM", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "userId") }, inverseJoinColumns = { @JoinColumn(name = "TEAM_ID", referencedColumnName = "teamId") })
 	private List<Team> belongsTeams;
-	
+
 	
 	public String getEmail() {
 		return email;
@@ -134,11 +129,9 @@ public class User implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-
 	@Override
 	public String toString() {
-		return "User [email=" + email + ", name=" + name + ", password=" + password + ", roles="
-				+ roles + "]";
+		return "User [email=" + email + ", name=" + name + ", password=" + password + ", roles=" + roles + "]";
 	}
 
 	public User(@Email @NotEmpty String email, @NotEmpty String name, @Size(min = 3) String password) {
@@ -149,14 +142,6 @@ public class User implements Serializable{
 	}
 
 
-
-	public List<Question> getQuestions() {
-		return questions;
-	}
-
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
-	}
 
 	public int getUserId() {
 		return userId;
@@ -206,8 +191,7 @@ public class User implements Serializable{
 		this.lastName = lastName;
 	}
 
-	public User(@Email @NotEmpty String email, @NotEmpty String name, @NotEmpty String firstName,
-			@NotEmpty String lastName, @Size(min = 3) String password) {
+	public User(@Email @NotEmpty String email, @NotEmpty String name, @NotEmpty String firstName, @NotEmpty String lastName, @Size(min = 3) String password) {
 		super();
 		this.email = email;
 		this.name = name;
@@ -230,5 +214,21 @@ public class User implements Serializable{
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public List<Question> getAskQuestions() {
+		return askQuestions;
+	}
+
+	public void setAskQuestions(List<Question> askQuestions) {
+		this.askQuestions = askQuestions;
+	}
+
+	public List<Question> getVoteQuestions() {
+		return voteQuestions;
+	}
+
+	public void setVoteQuestions(List<Question> voteQuestions) {
+		this.voteQuestions = voteQuestions;
 	}
 }

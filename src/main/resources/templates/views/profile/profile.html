@@ -40,7 +40,7 @@
 						<h4 class="my-0 font-weight-normal">Ask question</h4>
 					</div>
 					<div class="card-body">
-						<h1 class="card-title pricing-card-title m-0" th:text="${#lists.size(user.questions)}">9</h1>
+						<h1 class="card-title pricing-card-title m-0" th:text="${#lists.size(user.askQuestions)}">9</h1>
 						<p class="lead text-muted mb-3">asked questions</p>
 						<a href="/profile/addQuestion"
 							class="btn btn-lg btn-block btn-outline-primary">Create new
@@ -48,13 +48,14 @@
 							<a href="/profile/showAskedQuestions" class="btn btn-lg btn-block btn-outline-primary">Show all questions</a>
 
 					</div>
+					
 				</div>
 				<div class="card mb-4 shadow">
 					<div class="card-header">
 						<h4 class="my-0 font-weight-normal">Voting</h4>
 					</div>
 					<div class="card-body">
-						<h1 class="card-title pricing-card-title m-0">5</h1>
+						<h1 class="card-title pricing-card-title m-0" th:text="${#lists.size(user.voteQuestions)}">5</h1>
 						<p class="lead text-muted mb-3">to answer</p>
 						<a href="#" class="btn btn-lg btn-block btn-outline-primary">Pick
 							random</a> <a href="#"

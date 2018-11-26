@@ -38,7 +38,7 @@
 				<tr th:each="question,iter : ${questions}">
 					<th scope="row" th:text="${iter.index+1}">1</th>
 					<td th:text="${question.text}">Naslov</td>
-					<td class="text-center" th:text="${#lists.size(question.opinion)}">5</td>
+					<td class="text-center" th:text="${#lists.size(question.opinions)}">5</td>
 					<td class="text-center">0</td>
 					<td class="text-center">
 					<a th:href="@{'/profile/viewQuestion/'+${question.questionId}}"><i class="fa fa-eye mr-2" aria-hidden="true"></i></a>

@@ -2,6 +2,7 @@ package com.bojan.teamvote.service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -34,7 +35,16 @@ public class TeamService {
 		for (String email : request.getMemberEmails()) {
 			set.add(email);
 		}
-		request.setMemberEmails((String[])set.toArray());
+		String[] tempEmails = new String[set.size()];
+		int index = 0;
+		for (Iterator iterator = set.iterator(); iterator.hasNext();) {
+			String email = (String) iterator.next();
+			tempEmails[index] = email;
+			index ++;
+		}
+		
+		
+		request.setMemberEmails(tempEmails);
 		
 		// Create team
 		Team team = new Team();

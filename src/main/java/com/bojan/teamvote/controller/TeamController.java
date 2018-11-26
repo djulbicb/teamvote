@@ -48,6 +48,9 @@ public class TeamController {
 			model.addAttribute("request", request);
 			return "views/profile/manageTeam";
 		}
+		System.out.println("------------");
+		System.out.println(request);
+		System.out.println("------------");
 		teamService.addTeam(principal.getName(), request);
 		return "redirect:/profile";
 	}
