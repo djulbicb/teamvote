@@ -1,57 +1,73 @@
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+	position: relative;
+	min-height: 100%;
 }
+
 body {
-  margin-bottom: 60px; /* Margin bottom by footer height */
+	margin-bottom: 60px; /* Margin bottom by footer height */
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 40px; /* Set the fixed height of the footer here */
-  line-height: 30px; /* Vertically center the text there */
-  background-color: #f5f5f5;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 40px; /* Set the fixed height of the footer here */
+	line-height: 30px; /* Vertically center the text there */
+	background-color: #f5f5f5;
 }
 
 body {
-
-    background-color: #d6f3fb); 
-    background-position:center;
-    background-size:cover;
-     background-repeat: no-repeat;
-    background-image: linear-gradient(to top left, #8bccf7, #d6f3fb);
-    /*url('/../../img/background.png'),*/ 
-    
+	background-color: #d6f3fb);
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-image: linear-gradient(to top left, #8bccf7, #d6f3fb);
+	/*url('/../../img/background.png'),*/
 }
 
-
-.display-4{
+.display-4 {
 	font-size: 200%;
 }
 
-.invisible-form-control{
-	background-color: rgba(255,255,255,0.2)!important;
-	border: 0px solid rgba(0,0,0,0.2) !important;
-	
+.invisible-form-control {
+	background-color: rgba(255, 255, 255, 0.2) !important;
+	border: 0px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 /* CSS REQUIRED */
 .state-icon {
-    left: -5px;
+	left: -5px;
 }
+
 .list-group-item-primary {
-    color: rgb(255, 255, 255);
-    background-color: rgb(66, 139, 202);
+	color: rgb(255, 255, 255);
+	background-color: rgb(66, 139, 202);
 }
 
 /* DEMO ONLY - REMOVES UNWANTED MARGIN */
 .well .list-group {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
 .list-group-item:hover {
-    background-color: #f5f5f5;
+	background-color: #f5f5f5;
 }
+
+.select-transparent, .select-transparent:hover {
+	border: none;
+	margin-right: 10px;
+	background-color: transparent;
+	overflow-y: auto;
+	
+}
+
+.select-transparent:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 0px 0px rgba(0,0,0,.075),0 0 0px rgba(102,175,233,.6);
+    box-shadow: inset 0 0px 0px rgba(0,0,0,.075),0 0 0px rgba(102,175,233,.6);
+}
+
+

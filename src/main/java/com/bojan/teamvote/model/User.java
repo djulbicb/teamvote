@@ -60,14 +60,21 @@ public class User implements Serializable {
 	@Fetch(value = FetchMode.SUBSELECT)
 	List<Question> askQuestions;
 
+	@OneToMany(targetEntity = Vote.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	@JsonIgnore
+	@Fetch(value = FetchMode.SUBSELECT)
+	List<Vote> votes;
+	
 	@ManyToMany(mappedBy = "voters")
 	@JsonIgnore
 	private List<Question> voteQuestions;
 
+	/*
 	@ManyToMany(mappedBy = "users")
 	@JsonIgnore
 	private List<Opinion> opinions;
-
+	*/
+	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	@JoinTable(name = "USER_ROLES", joinColumns = { @JoinColumn(name = "USER_EMAIL", referencedColumnName = "email") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_EMAIL", referencedColumnName = "name") })
@@ -80,7 +87,7 @@ public class User implements Serializable {
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
-	@JoinTable(name = "USER_TEAM", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "userId") }, inverseJoinColumns = { @JoinColumn(name = "TEAM_ID", referencedColumnName = "teamId") })
+	@JoinTable(name = "USER_TEAMS", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "userId") }, inverseJoinColumns = { @JoinColumn(name = "TEAM_ID", referencedColumnName = "teamId") })
 	private List<Team> belongsTeams;
 
 	
@@ -151,13 +158,7 @@ public class User implements Serializable {
 		this.userId = userId;
 	}
 
-	public List<Opinion> getOpinions() {
-		return opinions;
-	}
 
-	public void setOpinions(List<Opinion> opinions) {
-		this.opinions = opinions;
-	}
 
 	public List<Team> getOwnsTeams() {
 		return ownsTeams;
@@ -231,4 +232,14 @@ public class User implements Serializable {
 	public void setVoteQuestions(List<Question> voteQuestions) {
 		this.voteQuestions = voteQuestions;
 	}
+
+	public List<Vote> getVotes() {
+		return votes;
+	}
+
+	public void setVotes(List<Vote> votes) {
+		this.votes = votes;
+	}
+
+
 }

@@ -8,10 +8,10 @@ A prototype of a team voting web app. Define a question and assign it to differe
 ## Current TODO list
 * Show assigned questions
 * Show public questions
-* Finish CRUD Question, Option, Team. Create is finished
+* Finish CRUD Question, Option, Team, Vote. Create is finished
 * Double check if teams are selected while creating a question
-* Add voting functionality
 * Add archive question functionality
+* Clean user lists after creating a vote
 
 ## Done TODO list
 * Create question, Create option, Create Team
@@ -21,6 +21,7 @@ A prototype of a team voting web app. Define a question and assign it to differe
 * JUnit test for creating initial user repository
 * Limit fetching of teams and users to make up faster. 
 * Define public/private questions
+* Add basic voting functionality
 
 ## Optional
 * Set filter search on keyup event, instead on blur event. Check performance

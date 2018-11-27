@@ -57,12 +57,10 @@
 					<div class="card-body">
 						<h1 class="card-title pricing-card-title m-0" th:text="${#lists.size(user.voteQuestions)}">5</h1>
 						<p class="lead text-muted mb-3">to answer</p>
-						<a href="#" class="btn btn-lg btn-block btn-outline-primary">Pick
-							random</a> <a href="#"
-							class="btn btn-lg btn-block btn-outline-primary">Show all
-							questions</a> <a href="#"
-							class="btn btn-lg btn-block btn-outline-primary">Show all
-							voted</a>
+		
+						<a href="/vote/showAll" class="btn btn-lg btn-block btn-outline-primary">Show all questions</a>
+						<a href="/vote/random" class="btn btn-lg btn-block btn-outline-primary">Random question</a> 
+						<a href="/vote/archived" class="btn btn-lg btn-block btn-outline-primary">Show archived</a>
 					</div>
 				</div>
 				

@@ -85,7 +85,7 @@ public class TeamvoteApplicationTests {
 		op1.setQuestion(q);
 		List<User> users = new ArrayList<>();
 		users.add(questionUser);
-		op1.setUsers(users);
+		//op1.setUsers(users);
 
 		Opinion op2 = new Opinion();
 		op2.setText("Opinion 2");
@@ -93,7 +93,7 @@ public class TeamvoteApplicationTests {
 		op2.setQuestion(q);
 		List<User> users2 = new ArrayList<>();
 		users.add(questionUser);
-		op2.setUsers(users2);
+		//op2.setUsers(users2);
 
 		opinion.add(op1);
 		opinion.add(op2);

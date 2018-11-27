@@ -181,4 +181,9 @@ public class QuestionService {
 		return listNumbers;
 	}
 
+	public Question findById(int questionId) {
+		Question question = questionDao.findById(questionId).get();
+		return question;
+	}
+
 }

@@ -3,7 +3,12 @@ package com.bojan.teamvote.model.dto;
 import java.util.Arrays;
 
 import javax.validation.constraints.NotEmpty;
-
+/**
+ * Data Transfer Class used in creating teams in views:
+ * profile/addTeam.html
+ * 
+ * @author Bojan
+ */
 public class AddTeamDto {
 	
 	@NotEmpty(message = "You must enter team name.")

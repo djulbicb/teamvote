@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -21,6 +24,7 @@ public class Opinion {
 	@JsonIgnore
 	Question question;
 	
+	/*
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JsonIgnore
 	@JoinTable(name="OPINION_USER", joinColumns= {
@@ -29,8 +33,13 @@ public class Opinion {
 			@JoinColumn(name="USER_ID", referencedColumnName="userId")
 	})
 	private List<User> users;
+	*/
 	
-	
+	@OneToMany(targetEntity = Vote.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "opinions", orphanRemoval = true)
+	@JsonIgnore
+	@Fetch(value = FetchMode.SUBSELECT)
+	List<Vote> votes;
+		
 	public String getText() {
 		return text;
 	}
@@ -55,10 +64,11 @@ public class Opinion {
 	public void setOpinionId(int opinionId) {
 		this.opinionId = opinionId;
 	}
-	public List<User> getUsers() {
-		return users;
+	public List<Vote> getVotes() {
+		return votes;
 	}
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setVotes(List<Vote> votes) {
+		this.votes = votes;
 	}
+
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	data-layout-decorate="~{fragments/main}">
+<head>
+<html>
+<head>
+<title>Register</title>
+
+</head>
+<body>
+
+	<div data-layout-fragment="content">
+	
+	
+		<div
+			class="pricing-header px-3 py-3 pt-md-5 pb-md-3 mx-auto text-center">
+			<h1 class="display-4" th:text="${question.text}">
+				Vote on this question to see the current statistics
+			</h1>
+			<p class="lead">Vote on this question to see the current statistics.</p>
+		</div>
+	
+	<form th:action="${'/vote/question/'+question.questionId}" method="post" th:object="${request}">
+		<div class="list-group rounded">
+		    <select th:size="${#lists.size(question.opinions)+1}" class="select-transparent" th:field="*{selVotes}">
+		      <option class="list-group-item mb-1 rounded"  th:each="opinion:${question.opinions}" th:value="${opinion.opinionId}" th:text="${opinion.text}">1</option>
+		    </select>
+		  </div>
+	
+		<div class="row">
+			<div class="col-5 offset-3">
+				<input type="submit" class="btn btn-primary btn-block px-5 py-3" value="Vote" />
+			</div>
+		</div>
+	</form>
+		
+
+	
+	</div>
+</body>
+</html>

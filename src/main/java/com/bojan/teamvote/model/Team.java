@@ -22,7 +22,7 @@ public class Team implements Serializable{
 	User owner;
 	
 	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="USER_TEAM", joinColumns= {
+	@JoinTable(name="USER_TEAMS", joinColumns= {
 			@JoinColumn(name="TEAM_ID", referencedColumnName="teamId")
 	}, inverseJoinColumns= {
 			@JoinColumn(name="USER_ID", referencedColumnName="userId")

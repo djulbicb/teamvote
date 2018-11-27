@@ -43,6 +43,11 @@ public class Question implements Serializable{
 	@JsonIgnore
 	User owner;
 
+	@OneToMany(targetEntity = Vote.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "question", orphanRemoval = true)
+	@JsonIgnore
+	@Fetch(value = FetchMode.SUBSELECT)
+	List<Vote> votes;
+	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "QuestionsUser", joinColumns = @JoinColumn(name = "questionId"), inverseJoinColumns = @JoinColumn(name = "userId"))
@@ -121,6 +126,14 @@ public class Question implements Serializable{
 
 	public void setOpinions(List<Opinion> opinions) {
 		this.opinions = opinions;
+	}
+
+	public List<Vote> getVotes() {
+		return votes;
+	}
+
+	public void setVotes(List<Vote> votes) {
+		this.votes = votes;
 	}
 
 }
