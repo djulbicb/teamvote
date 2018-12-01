@@ -5,7 +5,7 @@
 <head>
 <html>
 <head>
-<title>Register</title>
+<title>Vote question</title>
 
 </head>
 <body>
@@ -33,8 +33,10 @@
 					    	
 					    	</h6>
 					  </div>
-					  <div class="col-lg-2 d-flex">
-					  		<a th:href="${'/vote/question/'+question.questionId}" class="btn btn-block btn-outline-primary">Vote</a>
+					   <div class="col-lg-2 d-flex align-items-center">
+					  		<a th:href="${'/vote/question/'+question.questionId}" class="btn btn-block btn-outline-primary">
+					  		<div>Vote</div>
+					  		</a>
 					  </div>
 				  </div>	   	
 			  </div>

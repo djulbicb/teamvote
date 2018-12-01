@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +26,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 
+import com.bojan.teamvote.model.enums.QuestionState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -54,6 +57,11 @@ public class Question implements Serializable{
 	@JsonIgnore
 	List<User> voters;
 	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "QuestionsUserVoted", joinColumns = @JoinColumn(name = "questionId"), inverseJoinColumns = @JoinColumn(name = "userId"))
+	@JsonIgnore
+	List<User> votedVoters;
+	
 	@OneToMany(targetEntity=Opinion.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "question", orphanRemoval = true)
 	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
@@ -62,7 +70,8 @@ public class Question implements Serializable{
 	@Column(name = "timestamp", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	Timestamp timestamp;
 
-	boolean isPublic;
+	@Enumerated(EnumType.STRING)
+	QuestionState state;
 
 	public String getText() {
 		return text;
@@ -96,14 +105,6 @@ public class Question implements Serializable{
 	}
 
 
-	public boolean isPublic() {
-		return isPublic;
-	}
-
-	public void setPublic(boolean isPublic) {
-		this.isPublic = isPublic;
-	}
-
 	public List<User> getVoters() {
 		return voters;
 	}
@@ -134,6 +135,22 @@ public class Question implements Serializable{
 
 	public void setVotes(List<Vote> votes) {
 		this.votes = votes;
+	}
+
+	public QuestionState getState() {
+		return state;
+	}
+
+	public void setState(QuestionState state) {
+		this.state = state;
+	}
+
+	public List<User> getVotedVoters() {
+		return votedVoters;
+	}
+
+	public void setVotedVoters(List<User> votedVoters) {
+		this.votedVoters = votedVoters;
 	}
 
 }

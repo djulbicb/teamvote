@@ -56,6 +56,9 @@ public class VoteService {
 				System.out.println("Error saving vote");
 			}
 		}
+		
+		
+		
 		System.out.println("Vote added " + vote);
 		voteDao.save(vote);
 	}

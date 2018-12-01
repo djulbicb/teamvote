@@ -1,3 +1,4 @@
+
 package com.bojan.teamvote.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;

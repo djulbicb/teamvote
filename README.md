@@ -6,14 +6,16 @@ Java, SpringBoot, Thymeleaf, Bootstrap, Hibernate, MySQL, JQuery | Editor used: 
 A prototype of a team voting web app. Define a question and assign it to different teams who can vote on it via email or on website.
 
 ## Current TODO list
-* Show assigned questions
-* Show public questions
 * Finish CRUD Question, Option, Team, Vote. Create is finished
+* Redirect if user already voted for a question to showResults.html
 * Double check if teams are selected while creating a question
 * Add archive question functionality
 * Clean user lists after creating a vote
 
 ## Done TODO list
+* Show voting results
+* Show assigned questions
+* Show public questions on index page
 * Create question, Create option, Create Team
 * Login/register page, Create User, profile page
 * Spring Security
@@ -26,3 +28,6 @@ A prototype of a team voting web app. Define a question and assign it to differe
 ## Optional
 * Set filter search on keyup event, instead on blur event. Check performance
 
+
+
+ git commit -am "View on index page all public questions,"

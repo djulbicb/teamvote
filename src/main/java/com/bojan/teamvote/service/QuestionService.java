@@ -1,5 +1,7 @@
 package com.bojan.teamvote.service;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import com.bojan.teamvote.model.Question;
 import com.bojan.teamvote.model.Team;
 import com.bojan.teamvote.model.User;
 import com.bojan.teamvote.model.dto.AddQuestionDto;
+import com.bojan.teamvote.model.enums.QuestionState;
 
 @Service
 @Transactional
@@ -69,7 +72,7 @@ public class QuestionService {
 			}
 		}
 
-		question.setPublic(false);
+		question.setState(QuestionState.ACTIVE);
 		question.setOwner(user);
 		user.getAskQuestions().add(question);
 		
@@ -120,7 +123,7 @@ public class QuestionService {
 					member.getVoteQuestions().add(question);
 				}
 
-				question.setPublic(false);
+				question.setState(QuestionState.PUBLIC);
 				question.setOwner(user);
 				user.getAskQuestions().add(question);
 
@@ -160,7 +163,7 @@ public class QuestionService {
 		List<User> voters = new ArrayList<>();
 		question.setVoters(voters);
 
-		question.setPublic(false);
+		question.setState(QuestionState.ACTIVE);
 		question.setOwner(user);
 		user.getAskQuestions().add(question);
 
@@ -184,6 +187,10 @@ public class QuestionService {
 	public Question findById(int questionId) {
 		Question question = questionDao.findById(questionId).get();
 		return question;
+	}
+	
+	public List<Question> findAllPublicQuestions(){
+		return questionDao.findAllQuestionsByState(QuestionState.ACTIVE);
 	}
 
 }

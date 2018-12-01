@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	data-layout-decorate="~{fragments/main}">
+<head>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div data-layout-fragment="content">
+	
+	
+		<div
+			class="pricing-header px-3 py-3 pt-md-5 pb-md-3 mx-auto text-center">
+			<h1 class="display-4" th:text="${question.text}">
+				List of all public questions
+			</h1>
+			<p class="lead">
+			Created by: <span th:text="${question.owner.name}">Bojan</span> | Date: <span th:text="${#strings.substring(question.timestamp,0,10)}" >Bojan</span>
+			</p>
+			
+			<p th:text="${quesion}"></p>
+			
+			<div>
+				<div th:each="opinion : ${question.opinions}">
+					<p th:text="${opinion.text}"></p>
+					<p th:text="${#lists.size(opinion.votes)}"></p>
+				</div>
+			</div>
+			<p th:each="opinion : ${question.opinions}">
+			
+			
+			
+			</p>
+		</div>
+	
+	
+		
+	
+	</div>
+	
+	
+
+</body>
+</html>

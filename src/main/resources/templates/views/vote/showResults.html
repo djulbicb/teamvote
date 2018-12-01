@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	data-layout-decorate="~{fragments/main}">
+<head>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div data-layout-fragment="content">
+
+
+		<div
+			class="pricing-header px-3 py-3 pt-md-5 pb-md-3 mx-auto text-center">
+			<h1 class="display-4" th:text="${question.text}">List of all public questions</h1>
+			<p class="lead">Anyone who is logged in can vote on this
+				questions.</p>
+		</div>
+
+
+ <script type="text/javascript" th:inline="javascript" class="init">
+        /*<![CDATA[*/
+        window.onload = function (e) {
+            var dps = [];
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "light2", // "light1", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                /*
+                title: {
+                    text: "Current results"
+                },*/
+                axisY:{
+                    interval: 1
+                  },
+                data: [{
+                        type: "column",
+                        dataPoints: dps
+                    }]
+            });
+
+
+            var dataPointsList = /*[[${dataPointsList}]]*/ 'null';
+
+            count = 0;
+            for (var i = 0; i < dataPointsList.length; i++) {
+                var dataPoints = dataPointsList[i];
+                for (var j = 0; j < dataPoints.length; j++) {
+                    dps[count++] = {
+                        x: dataPoints[j].x,
+                        y: dataPoints[j].y,
+                        label:dataPoints[j].label
+                    };
+                }
+            }
+            chart.render();
+        }
+        /*]]>*/
+    </script>
+
+
+
+		<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+
+	</div>
+
+
+
+</body>
+</html>

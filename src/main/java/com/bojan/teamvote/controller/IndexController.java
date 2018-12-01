@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.support.HttpRequestHandlerServlet;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bojan.teamvote.model.Question;
 import com.bojan.teamvote.model.User;
+import com.bojan.teamvote.service.QuestionService;
 import com.bojan.teamvote.service.UserService;
 
 @Controller
@@ -34,8 +37,22 @@ public class IndexController {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	QuestionService questionService;
+	
+	/**
+	 * Shows all public questions. Anyone who is logged in can vote on them. If user already voted show statistics
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/")
-	public String getIndex() {
+	public String getIndex(
+			Model model
+			) {
+		
+		List<Question> questions = questionService.findAllPublicQuestions();
+		model.addAttribute("questions", questions);
+		
 		return "views/index";
 	}
 

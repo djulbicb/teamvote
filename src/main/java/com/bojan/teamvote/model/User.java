@@ -69,6 +69,10 @@ public class User implements Serializable {
 	@JsonIgnore
 	private List<Question> voteQuestions;
 
+	@ManyToMany(mappedBy = "votedVoters")
+	@JsonIgnore
+	private List<Question> votedQuestions;
+	
 	/*
 	@ManyToMany(mappedBy = "users")
 	@JsonIgnore
@@ -239,6 +243,14 @@ public class User implements Serializable {
 
 	public void setVotes(List<Vote> votes) {
 		this.votes = votes;
+	}
+
+	public List<Question> getVotedQuestions() {
+		return votedQuestions;
+	}
+
+	public void setVotedQuestions(List<Question> votedQuestions) {
+		this.votedQuestions = votedQuestions;
 	}
 
 

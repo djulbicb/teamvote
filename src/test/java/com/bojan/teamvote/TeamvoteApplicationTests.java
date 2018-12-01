@@ -105,5 +105,11 @@ public class TeamvoteApplicationTests {
 		questionUser.setAskQuestions(questions );
 		userService.updateUser(questionUser);
 	}
+	
+	@Test
+	public void check() {
+		List<Question> questions = questionService.findAllPublicQuestions();
+		System.out.println(questions);
+	}
 
 }
