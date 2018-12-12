@@ -55,22 +55,24 @@ public class User implements Serializable {
 
 	private String avatar;
 
-	@OneToMany(targetEntity = Question.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
+	@OneToMany(targetEntity = Question.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
 	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
 	List<Question> askQuestions;
 
-	@OneToMany(targetEntity = Vote.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	@OneToMany(targetEntity = Vote.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
 	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
 	List<Vote> votes;
 	
 	@ManyToMany(mappedBy = "voters")
 	@JsonIgnore
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Question> voteQuestions;
 
 	@ManyToMany(mappedBy = "votedVoters")
 	@JsonIgnore
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Question> votedQuestions;
 	
 	/*
@@ -84,9 +86,9 @@ public class User implements Serializable {
 	@JoinTable(name = "USER_ROLES", joinColumns = { @JoinColumn(name = "USER_EMAIL", referencedColumnName = "email") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_EMAIL", referencedColumnName = "name") })
 	private List<Role> roles;
 
-	@OneToMany(targetEntity = Team.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
+	@OneToMany(targetEntity = Team.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
 	@JsonIgnore
-	@Fetch(value = FetchMode.SUBSELECT)
+	//@Fetch(value = FetchMode.SUBSELECT)
 	List<Team> ownsTeams;
 
 	@ManyToMany(cascade = CascadeType.ALL)

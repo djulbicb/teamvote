@@ -14,6 +14,9 @@ import com.bojan.teamvote.model.Question;
 import com.bojan.teamvote.model.User;
 import com.bojan.teamvote.model.Vote;
 import com.bojan.teamvote.model.dto.AddVoteDto;
+import com.bojan.teamvote.model.enums.QuestionState;
+import com.bojan.teamvote.model.exceptions.AlreadyVotedException;
+import com.bojan.teamvote.model.exceptions.QuestionArchivedException;
 
 @Transactional
 @Service
@@ -31,10 +34,23 @@ public class VoteService {
 	@Autowired
 	OpinionDao opinionDao;
 	
-	public void addVote(AddVoteDto request) {
+	public void addVote(AddVoteDto request, String principal) throws AlreadyVotedException, QuestionArchivedException {
 		
 		Question question = questionDao.findById(request.getQuestionId()).get();
-		User user = userDao.findByEmail(request.getUserEmail());
+		
+		// Check to see if question is archived
+		if (question.getState() == QuestionState.ARCHIVED) {
+			throw new QuestionArchivedException();
+		}
+	
+
+		
+		User user = userDao.findByEmail(principal);
+		
+		if (checkIfUserVoted(user, question)) {
+			System.out.println("User voted");
+			throw new AlreadyVotedException();
+		}
 		
 		Vote vote = new Vote();
 		vote.setUser(user);
@@ -57,10 +73,29 @@ public class VoteService {
 			}
 		}
 		
-		
+		question.getVotedVoters().add(user);
+		user.getVotedQuestions().add(question);
+		user.getVoteQuestions().remove(question);
+		question.getVotedVoters().add(user);
+		question.getVoters().remove(user);
 		
 		System.out.println("Vote added " + vote);
+		userDao.save(user);
 		voteDao.save(vote);
 	}
 
+	public boolean checkIfUserVoted(User user, Question q) {
+		System.out.println("Vote service - check if voted");
+		System.out.println(q.getVotedVoters());
+		
+		if(q.getVotedVoters().contains(user)) {
+			System.out.println("User already voted - service");
+			return true;
+		};
+		
+		
+		return false;
+	}
+
+	
 }

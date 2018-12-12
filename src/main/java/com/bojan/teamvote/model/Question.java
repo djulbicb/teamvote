@@ -46,12 +46,12 @@ public class Question implements Serializable{
 	@JsonIgnore
 	User owner;
 
-	@OneToMany(targetEntity = Vote.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "question", orphanRemoval = true)
+	@OneToMany(targetEntity = Vote.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "question", orphanRemoval = true)
 	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
 	List<Vote> votes;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "QuestionsUser", joinColumns = @JoinColumn(name = "questionId"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	@JsonIgnore
@@ -59,12 +59,13 @@ public class Question implements Serializable{
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "QuestionsUserVoted", joinColumns = @JoinColumn(name = "questionId"), inverseJoinColumns = @JoinColumn(name = "userId"))
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JsonIgnore
 	List<User> votedVoters;
 	
 	@OneToMany(targetEntity=Opinion.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "question", orphanRemoval = true)
-	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
+	@JsonIgnore
 	List<Opinion> opinions;
 
 	@Column(name = "timestamp", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

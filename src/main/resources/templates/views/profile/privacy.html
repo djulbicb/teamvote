@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	data-layout-decorate="~{fragments/main}">
+<head>
+<html>
+<head>
+<title>Register</title>
+
+</head>
+<body>
+
+	<div data-layout-fragment="content">
+
+		<div
+			class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+			<h1 class="display-4">
+				Hello <span
+					th:text="${#authentication.getPrincipal().getUsername()}"></span>
+			</h1>
+			<p class="lead">Set you privacy settings.</p>
+		</div>
+
+<div class="bg-light p-4">
+<div>
+<div class="row">
+	<div class="col">
+			<div class="form-group text-center">
+				<div class="custom-control custom-checkbox text-left">
+					<input type="checkbox" class="custom-control-input" id="customCheck1" > 
+					<label class="custom-control-label" for="customCheck1">Block me from being added into new teams</label>
+				</div>
+				
+				<div class="custom-control custom-checkbox text-left">
+					<input type="checkbox" class="custom-control-input" id="customCheck2" > 
+					<label class="custom-control-label" for="customCheck2">Stop receiving emails</label>
+				</div>
+				
+				<div class="custom-control custom-checkbox mt-2">
+					<button class="btn btn-lg btn-outline-primary">Update settings</button>
+				</div>
+			</div>
+	</div>
+	
+		<div class="col border-left">
+			<div class="form-group text-center">
+				<div class="custom-control custom-checkbox">
+					<br>
+					<label for="customCheck1">Delete account permanently</label><br>
+					<button class="btn btn-outline-primary">Delete my account</button>
+				</div>
+			</div>
+	</div>
+</div>
+</div>
+
+
+
+</div>
+
+
+	</div>
+</body>
+</html>

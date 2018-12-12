@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -20,15 +23,15 @@ public class Vote {
 	
 	String code;
 	
-	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.REFRESH, targetEntity=User.class)	
+	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.REFRESH, targetEntity=User.class)
 	@JsonIgnore
 	User user;
 	
-	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.REFRESH, targetEntity=Question.class)	
+	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.REFRESH, targetEntity=Question.class)	
 	@JsonIgnore
     Question question;
 	
-	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.REFRESH, targetEntity=Opinion.class)	
+	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.REFRESH, targetEntity=Opinion.class)	
 	@JsonIgnore
     Opinion opinions;
 
@@ -70,5 +73,10 @@ public class Vote {
 
 	public void setOpinions(Opinion opinions) {
 		this.opinions = opinions;
+	}
+
+	@Override
+	public String toString() {
+		return "Vote [voteId=" + voteId + ", code=" + code + ", user=" + user.getEmail() + ", question=" + question.getText() + ", opinions=" + opinions.getCount() + "]";
 	}
 }

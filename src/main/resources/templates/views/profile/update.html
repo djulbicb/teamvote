@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	data-layout-decorate="~{fragments/main}">
+<head>
+<html>
+<head>
+<title>Register</title>
+</head>
+<body>
+
+	<div data-layout-fragment="content">
+		<div class="row justify-content-center">
+
+			<div class="col-8 col-10 border rounded shadow mt-4 p-4 bg-light">
+				<h1 class="display-4 m-0 text-center">Update</h1>
+				<p class="lead mt-0 text-center">Enter info to update your information</p>
+				<hr>
+
+
+				<form th:action="@{/profile/update}" method="post" th:object=${user} enctype="multipart/form-data">
+
+					<div class="alert alert-dismissible alert-light"  data-th-if="${msg}">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <strong>Error:</strong> <span th:text="${msg}"></span>
+					</div>
+
+					<!-- Username -->
+					<div class="form-group mb-1">
+						<label for="name" class="mb-0 form-control-label">Username*</label> 
+						<input
+							type="text" class="form-control" th:field="*{name}" id="name" />
+						<small class="text text-danger" th:if="${#fields.hasErrors('name')}"
+							th:errors="*{name}"></small>
+					</div>
+					<!--END: Name-->
+
+					<div class="form-group mb-1">
+						<label for="email" class="mb-0 form-control-label">Email*</label> 
+						<input type="text" readonly="readonly" class="form-control" th:field="*{email}" id="email" />
+						<small class="text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+					</div>
+
+					<!-- First name and last name -->
+					<div class="row mb-1">
+					
+						<div class="col-md">
+							<div class="form-group mb-1">
+								<label for="firstName" class="mb-0 form-control-label">First name*</label>
+								<input type="text" class="form-control" th:field="*{firstName}" id="firstName"/>
+								<small class="text text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></small>
+							</div>
+						</div>
+
+						<div class="col-md">
+							<div class="form-group mb-1">
+								<label for="lastName" class="mb-0 form-control-label">Last name*</label>
+								<input type="text" class="form-control" th:field="*{lastName}" id="lastName"/>
+								<small class="mb-0 text text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></small>
+							</div>
+						</div>
+						
+					</div>
+					<!--END: First name and last name -->
+					
+					<!-- Password -->
+					<div class="form-group mb-3">
+						<label for="password" class="mb-0 form-control-label">Password*</label>
+						<input type="password" class="form-control" th:field="*{password}" id="password" />
+						<small class="text text-danger mb-0"
+							th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+					</div>
+					<!--END: Password -->
+					
+					<!-- Upload image -->
+					<div class="form-group mb-3">
+						<label for="avatarImage" class="mb-0 form-control-label">Upload user image (optinal)</label>
+					  	<div class="custom-file">
+					    <input type="file" class="custom-file-input" id="avatarImage" th:field="*{avatarImage}">
+					    <label class="custom-file-label" id="lblAvatarImage" for="validatedCustomFile">Choose file...</label>
+					    <div class="invalid-feedback">Example invalid custom file feedback</div>
+					</div>
+					<!--END: Upload image -->
+					
+					<br/><br/>
+					
+					<!-- Submit button -->
+					 <div class="form-group mb-0">		
+						<div class="btn-group btn-group-justified d-flex" role="group" aria-label="Basic example">
+							  <input type="submit" value="Update info" class="btn p-2 btn-primary w-100"/>
+							  <a href="/profile" class="btn btn-secondary p-2 w-100">Cancel</a>
+						</div>
+					</div>
+					<!--END: Submit button -->
+					
+					<script type="text/javascript">					
+					document.getElementById("avatarImage").onchange = function () {
+						document.getElementById("lblAvatarImage").innerHTML = this.value.replace(/.*[\/\\]/, '');
+					 };
+					</script>
+					
+				</form>
+				
+				
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

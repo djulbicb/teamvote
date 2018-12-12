@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.bojan.teamvote.model.Team;
 import com.bojan.teamvote.model.User;
 
 public interface UserDao extends JpaRepository<User, Integer>{
@@ -29,5 +30,6 @@ public interface UserDao extends JpaRepository<User, Integer>{
 	
 	@Query("Select u from User u WHERE u.email like %:email%")
 	List<User> findByFirstNameLike(@Param("email") String email);
+
 	
 }

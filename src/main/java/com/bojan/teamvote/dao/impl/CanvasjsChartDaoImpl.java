@@ -39,16 +39,6 @@ public class CanvasjsChartDaoImpl implements CanvasjsChartDao {
 			 map.put("label", opinion.getText());
 			 dataPoints1.add(map);
 		}
-		 
-		/*
-			map = new HashMap<Object,Object>(); map.put("x", 1167589800000L); map.put("y", 188);dataPoints1.add(map);
-			map = new HashMap<Object,Object>(); map.put("x", 1199125800000L); map.put("y", 213);dataPoints1.add(map);
-			map = new HashMap<Object,Object>(); map.put("x", 1230748200000L); map.put("y", 213);dataPoints1.add(map);
-			map = new HashMap<Object,Object>(); map.put("x", 1262284200000L); map.put("y", 219);dataPoints1.add(map);
-			map = new HashMap<Object,Object>(); map.put("x", 1293820200000L); map.put("y", 207);dataPoints1.add(map);
-			map = new HashMap<Object,Object>(); map.put("x", 1325356200000L); map.put("y", 167);dataPoints1.add(map);
-			map = new HashMap<Object,Object>(); map.put("x", 1356978600000L); map.put("y", 136);dataPoints1.add(map);
-		 */
 	 
 			list.add(dataPoints1);
 		 
@@ -69,13 +59,17 @@ public class CanvasjsChartDaoImpl implements CanvasjsChartDao {
  
 		 List<Opinion> opinions = question.getOpinions(); 
 		 System.out.println(opinions);
+		 for (Opinion opinion : opinions) {
+			System.out.println(opinion.getVotes());
+			System.out.println(opinion.getVotes().size());
+		}
 		 int count = 0;
 		 for (Opinion opinion : opinions) {
 			 System.out.println(opinion.getText());
 			 System.out.println(opinion.getVotes().size());
 			 map = new HashMap<Object,Object>(); 
 			 map.put("x", count++); 
-			 map.put("y", opinion.getVotes().size());
+			 map.put("y", opinion.getVotes().size()/2);
 			 map.put("label", opinion.getText());
 			 dataPoints1.add(map);
 		}

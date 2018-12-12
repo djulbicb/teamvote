@@ -19,7 +19,7 @@ public class Opinion {
 	String text;
 	int count;
 	
-	@ManyToOne(fetch=FetchType.EAGER,   cascade = CascadeType.REFRESH, targetEntity=Question.class)	
+	@ManyToOne(fetch=FetchType.LAZY,   cascade = CascadeType.REFRESH, targetEntity=Question.class)	
 	@JoinColumn(name="fk_quest_opinion")
 	@JsonIgnore
 	Question question;

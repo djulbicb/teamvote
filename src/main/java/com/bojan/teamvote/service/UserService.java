@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.bojan.teamvote.dao.RoleDao;
 import com.bojan.teamvote.dao.UserDao;
 import com.bojan.teamvote.model.Role;
+import com.bojan.teamvote.model.Team;
 import com.bojan.teamvote.model.User;
 
 @Service
@@ -33,8 +34,11 @@ public class UserService {
 		return userDao.findAll();
 	}
 	
+	@Autowired
+	BCryptPasswordEncoder encoder;
+	
 	public void addUser(User user) {
-		BCryptPasswordEncoder  encoder = new  BCryptPasswordEncoder();
+		
 		user.setPassword(encoder.encode(user.getPassword())); 
 		
 		Role userRole = new Role("USER");
@@ -46,7 +50,7 @@ public class UserService {
 	}
 
 	public void addAdmin(User user) {
-		BCryptPasswordEncoder  encoder = new  BCryptPasswordEncoder();
+
 		user.setPassword(encoder.encode(user.getPassword())); 
 		Role userRole = new Role("ADMIN");
 		Role role = roleDao.findById("ADMIN").get();
@@ -56,8 +60,18 @@ public class UserService {
 		userDao.save(user);
 	}
 	
-	public User updateUser(User user) {
-		return userDao.save(user);
+	public User updateUser(String email, User user) {
+		User dbUser = userDao.findByEmail(email);
+		dbUser.setFirstName(user.getFirstName());
+		dbUser.setLastName(user.getLastName());
+		dbUser.setPassword(encoder.encode(user.getPassword()));
+		
+		dbUser.setName(user.getName());
+		if (!user.getAvatarImage().isEmpty() && !user.getAvatar().equals("")) {
+			dbUser.setAvatar(user.getAvatar());
+		}
+		
+		return userDao.save(dbUser);
 	}
 	
 	public boolean ifExistsByName(String username) {
@@ -82,4 +96,6 @@ public class UserService {
 		System.out.println(users);
 		return users;
 	}
+
+
 }

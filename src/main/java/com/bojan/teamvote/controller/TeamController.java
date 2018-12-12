@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.bojan.teamvote.model.Team;
 import com.bojan.teamvote.model.User;
 import com.bojan.teamvote.model.dto.AddTeamDto;
 import com.bojan.teamvote.service.TeamService;
@@ -29,11 +30,30 @@ public class TeamController {
 	@Autowired
 	TeamService teamService;
 	
+	@GetMapping("showCreatedTeams")
+	public String getCreatedTeams(
+			Model model,
+			Principal principal) {
+		User user = userService.findByEmail(principal.getName());
+		model.addAttribute("teams", user.getOwnsTeams());
+		return "views/profile/showCreatedTeams";
+	}
+	
+	@GetMapping("showBelongsTeams")
+	public String getBelongsTeams(
+			Model model,
+			Principal principal) {
+		User user = userService.findByEmail(principal.getName());
+		model.addAttribute("teams", user.getBelongsTeams());
+		return "views/profile/showBelongsTeams";
+	}
+
+	
 	@GetMapping("addTeam")
 	public String getAddTeam(Model model) {
 		AddTeamDto request = new AddTeamDto();
 		model.addAttribute("request", request);
-		return "views/profile/manageTeam";
+		return "views/profile/addTeam";
 	}
 	
 	@PostMapping("addTeam")
@@ -46,7 +66,7 @@ public class TeamController {
 		if (results.hasErrors()) {
 			System.out.println("Error");
 			model.addAttribute("request", request);
-			return "views/profile/manageTeam";
+			return "views/profile/addTeam";
 		}
 		System.out.println("------------");
 		System.out.println(request);

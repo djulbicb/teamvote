@@ -193,4 +193,16 @@ public class QuestionService {
 		return questionDao.findAllQuestionsByState(QuestionState.ACTIVE);
 	}
 
+	public boolean checkIfUserVoted(String principal, Question q) {
+		User user = userDao.findByEmail(principal);
+		System.out.println(q.getVotedVoters());
+		if(q.getVotedVoters().contains(user)) {
+			System.out.println("User already voted");
+			return true;
+		};
+		
+		
+		return false;
+	}
+
 }

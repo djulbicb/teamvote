@@ -42,8 +42,9 @@
 					<td class="text-center" th:text="${#lists.size(question.opinions)}">5</td>
 					<td class="text-center">0</td>
 					<td class="text-center">
-					<a th:href="@{'/vote/view/'+${question.questionId}}"><i class="fa fa-eye mr-2" aria-hidden="true"></i></a>
+					<a th:href="@{'/vote/showResults/'+${question.questionId}}"><i class="fa fa-eye mr-2" aria-hidden="true"></i></a>
 					<a th:href="@{'/profile/deleteQuestion/'+${question.questionId}}"><i class="fa fa-trash mr-2" aria-hidden="true"></i></a>
+					<a th:href="@{'/profile/archiveQuestion/'+${question.questionId}}"><i class="fa fa-archive mr-2" aria-hidden="true"></i></a>
 					</td>
 				</tr>
 			</tbody>

@@ -59,8 +59,7 @@
 						<p class="lead text-muted mb-3">to answer</p>
 		
 						<a href="/vote/showAll" class="btn btn-lg btn-block btn-outline-primary">Show all questions</a>
-						<a href="/vote/random" class="btn btn-lg btn-block btn-outline-primary">Random question</a> 
-						<a href="/vote/archived" class="btn btn-lg btn-block btn-outline-primary">Show archived</a>
+						<a href="/profile/voted" class="btn btn-lg btn-block btn-outline-primary">Show voted</a>
 					</div>
 				</div>
 				
@@ -71,9 +70,10 @@
 					<div class="card-body">
 						<h1 class="card-title pricing-card-title m-0" th:text="${#lists.size(user.ownsTeams)}">5</h1>
 						<p class="lead text-muted mb-3">created teams</p>
-						<a href="/profile/addTeam" class="btn btn-lg btn-block btn-outline-primary">Create team</a> <a href="#"
+						<a href="/profile/addTeam" class="btn btn-lg btn-block btn-outline-primary">Create team</a> <a href="/profile/showCreatedTeams"
 							class="btn btn-lg btn-block btn-outline-primary">Show created
-							teams</a> <a href="#"
+							teams</a> 
+							<a href="/profile/showBelongsTeams"
 							class="btn btn-lg btn-block btn-outline-primary">Show
 							belonging teams</a>
 					</div>
@@ -87,10 +87,9 @@
 				</div>
 				<div class="card-body p-3 m-0">
 					<small class="text-muted mb-3 d-block">Modify settings for
-						user and privacy settings.</small> <a href="#"
+						user and privacy settings.</small> <a href="/profile/update"
 						class="btn btn-lg btn-outline-primary">User information</a> <a
-						href="#" class="btn btn-lg btn-outline-primary">Privacy
-						Settings</a>
+						href="/profile/privacy" class="btn btn-lg btn-outline-primary">Privacy Settings</a>
 
 				</div>
 			</div>
