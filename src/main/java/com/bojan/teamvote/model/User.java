@@ -1,5 +1,7 @@
 package com.bojan.teamvote.model;
 
+import static org.mockito.Mockito.withSettings;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -65,23 +68,17 @@ public class User implements Serializable {
 	@Fetch(value = FetchMode.SUBSELECT)
 	List<Vote> votes;
 	
-	@ManyToMany(mappedBy = "voters")
+	@ManyToMany(mappedBy = "voters",cascade=CascadeType.PERSIST)
 	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Question> voteQuestions;
 
-	@ManyToMany(mappedBy = "votedVoters")
+	@ManyToMany(mappedBy = "votedVoters",cascade=CascadeType.PERSIST)
 	@JsonIgnore
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Question> votedQuestions;
 	
-	/*
-	@ManyToMany(mappedBy = "users")
-	@JsonIgnore
-	private List<Opinion> opinions;
-	*/
-	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JsonIgnore
 	@JoinTable(name = "USER_ROLES", joinColumns = { @JoinColumn(name = "USER_EMAIL", referencedColumnName = "email") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_EMAIL", referencedColumnName = "name") })
 	private List<Role> roles;
@@ -91,11 +88,13 @@ public class User implements Serializable {
 	//@Fetch(value = FetchMode.SUBSELECT)
 	List<Team> ownsTeams;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.PERSIST)
 	@JsonIgnore
 	@JoinTable(name = "USER_TEAMS", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "userId") }, inverseJoinColumns = { @JoinColumn(name = "TEAM_ID", referencedColumnName = "teamId") })
 	private List<Team> belongsTeams;
 
+	@OneToOne(targetEntity=Setting.class, fetch=FetchType.EAGER, orphanRemoval=true, cascade=CascadeType.ALL)
+	Setting setting;
 	
 	public String getEmail() {
 		return email;
@@ -253,6 +252,14 @@ public class User implements Serializable {
 
 	public void setVotedQuestions(List<Question> votedQuestions) {
 		this.votedQuestions = votedQuestions;
+	}
+
+	public Setting getSetting() {
+		return setting;
+	}
+
+	public void setSetting(Setting setting) {
+		this.setting = setting;
 	}
 
 

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	data-layout-decorate="~{fragments/main}">
+<head>
+<html>
+<head>
+<title>Register</title>
+
+</head>
+<body>
+
+	<div data-layout-fragment="content">
+
+		<div
+			class="mt-5 jumbotron pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+			<h1 class="display-4">
+				Deleting <span th:text="${#authentication.getPrincipal().getUsername()}"></span>?
+			</h1>
+			<p class="lead">Are you sure you want to delete your profile?</p>
+			
+			<form method="POST" action="/profile/deleteProfile">
+			<div class="row">
+				
+				<div class="col-4 offset-2">
+					<input type="submit" class="btn btn-primary btn-block btn-danger" value="Delete"></input>				
+				</div>
+				<div class="col-4">
+					<a href="/profile" class="btn btn-outline-primary btn-block">Cancel</a>				
+				</div>
+				
+			</div>
+			</form>
+		</div>
+
+
+
+	</div>
+</body>
+</html>

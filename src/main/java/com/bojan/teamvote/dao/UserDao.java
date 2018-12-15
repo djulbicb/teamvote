@@ -25,7 +25,7 @@ public interface UserDao extends JpaRepository<User, Integer>{
 
 	//@Query("Select u from User u WHERE u.email like %:email% and u.firstName like %:firstName% and u.lastName like %:lastName%")
 	//@Query("Select u from User u WHERE u.email LIKE CONCAT ('%', :email, '%') and u.firstName LIKE CONCAT ('%', :firstName, '%') and u.lastName LIKE CONCAT ('%', :lastName, '%')")
-	@Query("Select u from User u WHERE u.email like %:email% and u.firstName like %:firstName% and u.lastName like %:lastName%")
+	@Query("Select u from User u WHERE u.email like %:email% and u.firstName like %:firstName% and u.lastName like %:lastName% and u.setting.addTeam=false")
 	List<User> findUsersByFilters(@Param("email") String email, @Param("firstName") String firstName, @Param("lastName") String lastName);
 	
 	@Query("Select u from User u WHERE u.email like %:email%")

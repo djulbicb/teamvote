@@ -51,13 +51,13 @@ public class Question implements Serializable{
 	@Fetch(value = FetchMode.SUBSELECT)
 	List<Vote> votes;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "QuestionsUser", joinColumns = @JoinColumn(name = "questionId"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	@JsonIgnore
 	List<User> voters;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinTable(name = "QuestionsUserVoted", joinColumns = @JoinColumn(name = "questionId"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JsonIgnore

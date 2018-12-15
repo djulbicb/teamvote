@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bojan.teamvote.model.Question;
+import com.bojan.teamvote.model.Setting;
 import com.bojan.teamvote.model.User;
 import com.bojan.teamvote.service.UserService;
+import com.sun.xml.internal.org.jvnet.staxex.NamespaceContextEx.Binding;
 
 @Controller
 @RequestMapping("/profile")
@@ -47,8 +49,41 @@ public class ProfileController {
 
 	@GetMapping("privacy")
 	public String getPrivacySetting(Model model, Principal principal) {
-
+		Setting settings =  userService.findByEmail(principal.getName()).getSetting();
+		model.addAttribute("request", settings);
 		return "views/profile/privacy";
+	}
+	
+	@GetMapping("deleteProfile")
+	public String getDeleteProfile(Model model, Principal principal) {
+		return "views/profile/deleteProfile";
+	}
+	
+	@PostMapping("deleteProfile")
+	public String postDeleteProfile(Model model, Principal principal) {
+		userService.deleteUser(principal.getName());
+		request.getSession().invalidate();
+		return "redirect:/";
+	}
+	
+	@PostMapping("updateSettings")
+	public String postUpdateSettings(
+			Model model,
+			@Valid @ModelAttribute("request") Setting setting,
+			BindingResult result,
+			Principal principal
+			) {
+		if (result.hasErrors()) {
+			for (ObjectError err : result.getAllErrors()) {
+				System.out.println(err);
+			}
+			model.addAttribute("request", setting);
+			return "views/profile/privacy";
+		}
+		
+		userService.updateSetting(setting, principal.getName());
+		
+		return "redirect:/profile?updated";
 	}
 	
 	@GetMapping("voted")

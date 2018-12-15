@@ -23,15 +23,15 @@ public class Vote {
 	
 	String code;
 	
-	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.REFRESH, targetEntity=User.class)
+	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity=User.class)
 	@JsonIgnore
 	User user;
 	
-	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.REFRESH, targetEntity=Question.class)	
+	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity=Question.class)	
 	@JsonIgnore
     Question question;
 	
-	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.REFRESH, targetEntity=Opinion.class)	
+	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.PERSIST, targetEntity=Opinion.class)	
 	@JsonIgnore
     Opinion opinions;
 

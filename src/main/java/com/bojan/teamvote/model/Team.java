@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Subselect;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -16,12 +20,13 @@ public class Team implements Serializable{
 	
 	String title;
 	
-	@ManyToOne(fetch=FetchType.EAGER,   cascade = CascadeType.REFRESH, targetEntity=User.class)	
+	@ManyToOne(fetch=FetchType.LAZY,   cascade = CascadeType.REFRESH, targetEntity=User.class)	
 	@JoinColumn(name="fk_user_team")
 	@JsonIgnore
 	User owner;
 	
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.REFRESH)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name="USER_TEAMS", joinColumns= {
 			@JoinColumn(name="TEAM_ID", referencedColumnName="teamId")
 	}, inverseJoinColumns= {

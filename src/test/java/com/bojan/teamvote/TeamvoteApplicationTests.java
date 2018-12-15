@@ -103,7 +103,7 @@ public class TeamvoteApplicationTests {
 		List<Question> questions = new ArrayList<>();
 		questions.add(q);
 		questionUser.setAskQuestions(questions );
-		userService.updateUser(questionUser);
+		//userService.updateUser(questionUser);
 	}
 	
 	@Test

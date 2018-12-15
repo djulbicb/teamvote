@@ -25,21 +25,23 @@
 <div>
 <div class="row">
 	<div class="col">
+		<form th:action="@{/profile/updateSettings}" method="post" th:object="${request}">
 			<div class="form-group text-center">
 				<div class="custom-control custom-checkbox text-left">
-					<input type="checkbox" class="custom-control-input" id="customCheck1" > 
-					<label class="custom-control-label" for="customCheck1">Block me from being added into new teams</label>
+					<input th:field="*{addTeam}" th:value="*{addTeam}" type="checkbox" class="custom-control-input" id="addTeam" > 
+					<label class="custom-control-label" for="addTeam">Block me from being added into new teams</label>
 				</div>
 				
 				<div class="custom-control custom-checkbox text-left">
-					<input type="checkbox" class="custom-control-input" id="customCheck2" > 
-					<label class="custom-control-label" for="customCheck2">Stop receiving emails</label>
+					<input th:field="*{sendEmail}" th:value="*{sendEmail}" type="checkbox" class="custom-control-input" id="sendEmail" > 
+					<label class="custom-control-label" for="sendEmail">Stop receiving emails</label>
 				</div>
 				
 				<div class="custom-control custom-checkbox mt-2">
-					<button class="btn btn-lg btn-outline-primary">Update settings</button>
+					<input type="submit" class="btn btn-lg btn-outline-primary" value="Update settings"></input>
 				</div>
 			</div>
+		</form>
 	</div>
 	
 		<div class="col border-left">
@@ -47,7 +49,7 @@
 				<div class="custom-control custom-checkbox">
 					<br>
 					<label for="customCheck1">Delete account permanently</label><br>
-					<button class="btn btn-outline-primary">Delete my account</button>
+					<a href="/profile/deleteProfile" class="btn btn-outline-primary">Delete profile</a>
 				</div>
 			</div>
 	</div>

@@ -14,14 +14,14 @@
 
 
 		<div class="pricing-header px-3 pt-md-5 pb-md-4 mx-auto text-center">
-			<h1 class="display-4">Create teams</h1>
+			<h1 class="display-4">View and Update teams</h1>
 			<p class="lead">Use first table to browse and pick for users and
 				add it team members table.</p>
 		</div>
 
-<form th:action="@{/profile/addTeam}" method="post" th:object="${request}">
+<form th:action="${'/profile/viewTeam/'+request.teamId}" method="post" th:object="${request}">
 		<div class="bg-light rounded shadow p-2">
-
+			<input type="hidden" th:value="${request.teamId}" name="teamId" />
 			<div class="row">
 				<div class="col">
 					<div class="form-group mb-0 small text-muted text-center">
@@ -90,7 +90,7 @@
 					placeholder="Type the name of the team" th:field="*{teamName}"
 					aria-label="Recipient's username" aria-describedby="basic-addon2" />
 				<div class="input-group-append">
-					<input class="btn btn-secondary" type="submit" value="Create team"/>
+					<input class="btn btn-secondary" type="submit" value="Update team"/>
 				</div>
 
 			</div>

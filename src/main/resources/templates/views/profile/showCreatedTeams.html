@@ -23,6 +23,11 @@
 		</div>
 
 
+<div th:if="${#lists.isEmpty(teams)}">
+		<p class="text-center lead">You havent created any team.</p>
+</div>
+
+<div th:if="${not #lists.isEmpty(teams)}">
 <div class="bg-light rounded shadow">
 		<table class="table table-striped table-hover text-center">
 			<thead>
@@ -42,14 +47,18 @@
 					<td th:text="${team.title}">Title</td>
 					<td th:text="${#lists.size(team.members)}">0</td>
 					<td>
-					<a th:href="@{'/vote/showResults/'+${team.teamId}}"><i class="fa fa-eye mr-2" aria-hidden="true"></i></a>
-					<a th:href="@{'/profile/deleteQuestion/'+${team.teamId}}"><i class="fa fa-trash mr-2" aria-hidden="true"></i></a>
+					<form th:action="@{'/profile/deleteTeam/'+${team.teamId}}" method="POST">
+					<input type="submit"  class="btn btn-sm btn-outline-primary" value="Delete"></input>
+					<a th:href="@{'/profile/viewTeam/'+${team.teamId}}" class="btn btn-sm btn-outline-primary">View</a>
+					</form>
+					
+					
 					</td>
 				</tr>
 			</tbody>
 		</table>
 </div>
-
+</div>
 	</div>
 </body>
 </html>

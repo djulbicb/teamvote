@@ -1,17 +1,22 @@
 package com.bojan.teamvote.service;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bojan.teamvote.dao.RoleDao;
+import com.bojan.teamvote.dao.SettingDao;
 import com.bojan.teamvote.dao.UserDao;
 import com.bojan.teamvote.model.Role;
+import com.bojan.teamvote.model.Setting;
 import com.bojan.teamvote.model.Team;
 import com.bojan.teamvote.model.User;
 
@@ -37,6 +42,9 @@ public class UserService {
 	@Autowired
 	BCryptPasswordEncoder encoder;
 	
+	@Autowired
+	SettingDao settingDao;
+	
 	public void addUser(User user) {
 		
 		user.setPassword(encoder.encode(user.getPassword())); 
@@ -46,6 +54,16 @@ public class UserService {
 		List<Role> roles = new ArrayList<>();
 		roles.add(role);
 		user.setRoles(roles);
+		
+		System.out.println(role);
+		
+		Setting setting = new Setting();
+		setting.setUser(user);
+		setting.setAddTeam(true);
+		setting.setSendEmail(true);		
+		
+		user.setSetting(setting);
+		
 		userDao.save(user);		
 	}
 
@@ -57,6 +75,13 @@ public class UserService {
 		List<Role> roles = new ArrayList<>();
 		roles.add(role);
 		user.setRoles(roles);
+		
+		Setting setting = new Setting();
+		setting.setUser(user);
+		setting.setAddTeam(true);
+		setting.setSendEmail(true);
+		user.setSetting(setting);
+		
 		userDao.save(user);
 	}
 	
@@ -95,6 +120,21 @@ public class UserService {
 		List<User> users = userDao.findUsersByFilters(email, firstName, lastName);
 		System.out.println(users);
 		return users;
+	}
+
+	public void updateSetting(@Valid Setting setting, String name) {
+		User user = userDao.findByEmail(name);
+		Setting dbSetting = user.getSetting();
+		
+		dbSetting.setAddTeam(setting.getAddTeam());
+		dbSetting.setSendEmail(setting.getSendEmail());
+		
+		userDao.save(user);
+	}
+
+	public void deleteUser(String name) {
+		User user = userDao.findByEmail(name);
+		userDao.delete(user);
 	}
 
 
