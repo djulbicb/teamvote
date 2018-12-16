@@ -9,6 +9,10 @@ import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Opinion is used to register when user votes on a question. There can only be one vote for a user per question
+ * @author Bojan
+ */
 @Entity
 public class Opinion {
 

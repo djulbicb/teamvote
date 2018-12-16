@@ -9,7 +9,11 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+/**
+ * Used in User entity. Controls user privacy in app. User can be blocked being added into a group or receiving emails.
+ * @author Bojan
+ *
+ */
 @Entity
 public class Setting {
 

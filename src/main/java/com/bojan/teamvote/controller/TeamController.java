@@ -35,6 +35,11 @@ public class TeamController {
 	@Autowired
 	TeamService teamService;
 	
+	// RETRIVE VIEWS
+	////////////////////////////////////////////////////////////////
+	/**
+	 * Shows all teams user has created
+	 */
 	@GetMapping("showCreatedTeams")
 	public String getCreatedTeams(
 			Model model,
@@ -44,6 +49,9 @@ public class TeamController {
 		return "views/profile/showCreatedTeams";
 	}
 	
+	/**
+	 * Shows all teams user is a part of
+	 */
 	@GetMapping("showBelongsTeams")
 	public String getBelongsTeams(
 			Model model,
@@ -53,7 +61,12 @@ public class TeamController {
 		return "views/profile/showBelongsTeams";
 	}
 
-	
+	// CREATE
+	////////////////////////////////////////////////////////////////
+
+	/**
+	 * Shows create a team view
+	 */
 	@GetMapping("addTeam")
 	public String getAddTeam(Model model) {
 		AddTeamDto request = new AddTeamDto();
@@ -61,6 +74,9 @@ public class TeamController {
 		return "views/profile/addTeam";
 	}
 	
+	/**
+	 * Proceeds to save form data as a new team
+	 */
 	@PostMapping("addTeam")
 	public String postAddTeam(
 			@Valid @ModelAttribute("request") AddTeamDto request, 
@@ -80,30 +96,12 @@ public class TeamController {
 		return "redirect:/profile";
 	}
 	
-	@GetMapping("test")
-	public String getTest() {
-		
-		List<User> findUsersByFilters = userService.findUsersByFilters("ptt", "", "");
-		System.out.println(findUsersByFilters);
-		return "views/profile/manageTeam";
-	}
+	// UPDATE
+	////////////////////////////////////////////////////////////////
 	
-	@PostMapping("removeFromTeam/{id}")
-	public String postRemoveFromTeam(
-			@PathVariable("id") int id,
-			Principal principal) {
-		teamService.removeFromTeam(principal.getName(), id);
-		return "redirect:/profile/showBelongsTeams";
-	}
-
-	@PostMapping("deleteTeam/{id}")
-	public String postDeleteTeam(
-			@PathVariable("id") int id,
-			Principal principal) throws DontHavePermission {
-		teamService.deleteTeam(principal.getName(), id);
-		return "redirect:/profile/showCreatedTeams";
-	}
-	
+	/**
+	 * Shows update team view
+	 */
 	@GetMapping("viewTeam/{id}")
 	public String postViewTeam(
 			@PathVariable("id") int id,
@@ -129,6 +127,9 @@ public class TeamController {
 		return "views/profile/viewTeam";
 	}
 	
+	/**
+	 * Proceeds to update team based on the form data
+	 */
 	@PostMapping("viewTeam/{id}")
 	public String postUpdateTeam(
 			@Valid @ModelAttribute("request") UpdateTeamDto request,
@@ -151,4 +152,28 @@ public class TeamController {
 		return "redirect:/profile/showCreatedTeams";
 	}
 	
+	// DELETE
+	////////////////////////////////////////////////////////////////
+	
+	/**
+	 * User can remove oneself from the team in the showBelongTeam page
+	 */
+	@PostMapping("removeFromTeam/{id}")
+	public String postRemoveFromTeam(
+			@PathVariable("id") int id,
+			Principal principal) {
+		teamService.removeFromTeam(principal.getName(), id);
+		return "redirect:/profile/showBelongsTeams";
+	}
+
+	/**
+	 * Proceeds to delete a team
+	 */
+	@PostMapping("deleteTeam/{id}")
+	public String postDeleteTeam(
+			@PathVariable("id") int id,
+			Principal principal) throws DontHavePermission {
+		teamService.deleteTeam(principal.getName(), id);
+		return "redirect:/profile/showCreatedTeams";
+	}
 }

@@ -17,6 +17,7 @@ import com.bojan.teamvote.model.dto.AddVoteDto;
 import com.bojan.teamvote.model.enums.QuestionState;
 import com.bojan.teamvote.model.exceptions.AlreadyVotedException;
 import com.bojan.teamvote.model.exceptions.QuestionArchivedException;
+import com.bojan.teamvote.model.exceptions.UserNotFound;
 
 @Transactional
 @Service
@@ -34,7 +35,18 @@ public class VoteService {
 	@Autowired
 	OpinionDao opinionDao;
 	
-	public void addVote(AddVoteDto request, String principal) throws AlreadyVotedException, QuestionArchivedException {
+	//	CREATE
+	////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Registers when user voted on a question. Holds information on user, question and vote objects
+	 * @param request - Data transfer object between vote view and view controller
+	 * @param principal - Spring security
+	 * @throws AlreadyVotedException - throws error if user already vote
+	 * @throws QuestionArchivedException - user is trying to vote on a archived question
+	 * @throws UserNotFound - User is trying through rest service and using a wrong email
+	 */
+	public void addVote(AddVoteDto request, String principal) throws AlreadyVotedException, QuestionArchivedException, UserNotFound {
 		
 		Question question = questionDao.findById(request.getQuestionId()).get();
 		
@@ -42,10 +54,10 @@ public class VoteService {
 		if (question.getState() == QuestionState.ARCHIVED) {
 			throw new QuestionArchivedException();
 		}
-	
-
-		
 		User user = userDao.findByEmail(principal);
+		if (user == null) {
+			throw new UserNotFound();
+		}	
 		
 		if (checkIfUserVoted(user, question)) {
 			System.out.println("User voted");
@@ -84,6 +96,15 @@ public class VoteService {
 		voteDao.save(vote);
 	}
 
+	//	UTILITY
+	////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Checks if user has already voted on a specified question
+	 * @param user - User
+	 * @param q - Question 
+	 * @return
+	 */
 	public boolean checkIfUserVoted(User user, Question q) {
 		System.out.println("Vote service - check if voted");
 		System.out.println(q.getVotedVoters());

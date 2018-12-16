@@ -1,12 +1,8 @@
 # TeamVote - Web App for public or team voting on different topics
-Java, SpringBoot, Thymeleaf, Bootstrap, Hibernate, MySQL, JQuery | Editor used: Spring Boot Suit
+Java, SpringBoot, Thymeleaf, Bootstrap, Hibernate, MySQL, JQuery, CanvasJS | Editor used: Spring Boot Suit
 
 ## Description
 A prototype of a team voting web app. Define a question and assign it to different teams who can vote on it via email or on website.
-
-## Current TODO list
-* Add archive question functionality
-* Add Email Service to send a email to users when questions is created
 
 ## Done TODO list
 * Show voting results
@@ -26,8 +22,12 @@ A prototype of a team voting web app. Define a question and assign it to differe
 * Adjust Lazy Eager loading of entity models
 * Finish CRUD Question, Option, Team, Vote, User.
 * Add exception handling
+* Add Email Service to send a email to users when questions is created
 
 ## Optional
 * Set filter search on keyup event, instead on blur event. Check performance
-* Double check in service if teams are selected while creating a question
-* Check exceptions
+* Add archive/unarchive question
+
+## Note
+* Run sql script teamvote.sql in mysql server to create basic database.
+* Email sending service is implemented but disabled currently. Also email and password is deleted from application.properties since this project is set to be public on github

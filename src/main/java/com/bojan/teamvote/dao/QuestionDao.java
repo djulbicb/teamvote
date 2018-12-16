@@ -13,6 +13,11 @@ import com.bojan.teamvote.model.enums.QuestionState;
 
 public interface QuestionDao extends JpaRepository<Question, Integer>{
 
+	/**
+	 * Filters question based on the question state. Finds all active or public questions.
+	 * @param state
+	 * @return
+	 */
 	@Query(value="from Question q where q.state =:state")
 	List<Question> findAllQuestionsByState(@Param("state") QuestionState state);
 
@@ -21,6 +26,6 @@ public interface QuestionDao extends JpaRepository<Question, Integer>{
 	// "SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Company c WHERE c.name = :companyName"
 	@Query("SELECT CASE WHEN COUNT(votedVoters)")
 	boolean checkIfUserVoted(@Param("user") User user, @Param("question")Question q);
-*/
+	 */
 	
 }

@@ -10,6 +10,10 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * Role can be ADMIN or USER. 
+ * @author Bojan
+ */
 @Entity
 public class Role implements Serializable{
 	@Id

@@ -22,6 +22,7 @@ import com.bojan.teamvote.model.enums.QuestionState;
 import com.bojan.teamvote.model.exceptions.AlreadyVotedException;
 import com.bojan.teamvote.model.exceptions.MustBeLoggedInException;
 import com.bojan.teamvote.model.exceptions.QuestionArchivedException;
+import com.bojan.teamvote.model.exceptions.UserNotFound;
 import com.bojan.teamvote.service.CanvasjsChartService;
 import com.bojan.teamvote.service.QuestionService;
 import com.bojan.teamvote.service.UserService;
@@ -40,7 +41,16 @@ public class VoteController {
 
 	@Autowired
 	VoteService voteService;
+	
+	@Autowired
+	private CanvasjsChartService canvasjsChartService;
 
+	// RETRIEVE
+	////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Shows all question user voted on
+	 */
 	@GetMapping("showAll")
 	public String getShowAll(Principal principal, Model model) {
 
@@ -51,7 +61,24 @@ public class VoteController {
 
 		return "views/vote/showAll";
 	}
+	
+	/**
+	 * Shows question
+	 */
+	@GetMapping("/view/{id}")
+	public String getViewQuestion(@PathVariable(name = "id") int questionId, @Autowired(required = false) Principal principal, Model model) throws MustBeLoggedInException {
 
+		Question question = questionService.findById(questionId);
+
+		model.addAttribute("question", question);
+		return "views/vote/viewQuestion";
+	}
+
+	// CREATE
+	////////////////////////////////////////////////////////////////
+	/**
+	 * Shows question and allows user to vote on a option
+	 */
 	@GetMapping("/question/{id}")
 	public String getVoteQuestion(@PathVariable(name = "id") int questionId, Principal principal, Model model) throws QuestionArchivedException {
 		Question question = questionService.findById(questionId);
@@ -76,8 +103,11 @@ public class VoteController {
 		return "views/vote/voteQuestion";
 	}
 
+	/**
+	 * Proceeds to register user vote on a question
+	 */
 	@PostMapping("/question/{id}")
-	public String postVoteQuestion(@PathVariable(name = "id") int questionId, @ModelAttribute(name = "request") AddVoteDto request, @Autowired Principal principal, Model model) throws AlreadyVotedException, QuestionArchivedException {
+	public String postVoteQuestion(@PathVariable(name = "id") int questionId, @ModelAttribute(name = "request") AddVoteDto request, @Autowired Principal principal, Model model) throws AlreadyVotedException, QuestionArchivedException, UserNotFound {
 
 		request.setUserEmail(principal.getName());
 		request.setQuestionId(questionId);
@@ -87,18 +117,9 @@ public class VoteController {
 		return "redirect:/profile";
 	}
 
-	@GetMapping("/view/{id}")
-	public String getViewQuestion(@PathVariable(name = "id") int questionId, @Autowired(required = false) Principal principal, Model model) throws MustBeLoggedInException {
-
-		Question question = questionService.findById(questionId);
-
-		model.addAttribute("question", question);
-		return "views/vote/viewQuestion";
-	}
-
-	@Autowired
-	private CanvasjsChartService canvasjsChartService;
-
+	// UTILITY
+	////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Shows voting result for the question. If question is public than skip
 	 * validation

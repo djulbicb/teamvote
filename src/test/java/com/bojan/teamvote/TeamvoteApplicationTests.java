@@ -33,7 +33,19 @@ public class TeamvoteApplicationTests {
 	@Autowired
 	RoleService roleService;
 	
+	/**
+	 * Add security privileges 
+	 */
 	@Test
+	public void initDb() {
+		{
+			roleService.addRole("USER");
+			roleService.addRole("ADMIN");
+		}
+	}
+	
+	@Test
+	@Deprecated
 	public void checkIfExists() {
 		boolean ifExistsByEmail = userService.ifExistsByEmail("admin@gmail.com");
 		boolean ifExistsByName = userService.ifExistsByName("admin");
@@ -43,34 +55,7 @@ public class TeamvoteApplicationTests {
 	}
 	
 	@Test
-	public void initDb() {
-		{
-			roleService.addRole("USER");
-			roleService.addRole("ADMIN");
-		}
-		
-		{
-			User user = new User();
-			user.setName("admin");
-			user.setPassword("1234");
-			user.setEmail("admin@gmail.com");
-			user.setFirstName("Admin");
-			user.setLastName("Adminic");
-			userService.addAdmin(user);
-		}
-
-		{
-			User user = new User();
-			user.setName("user");
-			user.setPassword("1234");
-			user.setEmail("user@gmail.com");
-			user.setFirstName("User");
-			user.setLastName("Useric");
-			userService.addUser(user);
-		}
-	}
-
-	@Test
+	@Deprecated
 	public void addQuestion() {
 		Question q = new Question();
 		q.setText("This is question 1");
@@ -105,11 +90,4 @@ public class TeamvoteApplicationTests {
 		questionUser.setAskQuestions(questions );
 		//userService.updateUser(questionUser);
 	}
-	
-	@Test
-	public void check() {
-		List<Question> questions = questionService.findAllPublicQuestions();
-		System.out.println(questions);
-	}
-
 }

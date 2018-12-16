@@ -11,6 +11,11 @@ import org.hibernate.annotations.Subselect;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Team is used to group users. Question can be assigned to users.
+ * User can belong to a team or group other users in a team to easily assign question
+ * @author Bojan
+ */
 @Entity
 public class Team implements Serializable{
 

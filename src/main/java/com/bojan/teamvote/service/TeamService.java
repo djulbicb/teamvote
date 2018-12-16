@@ -28,10 +28,23 @@ public class TeamService {
 
 	@Autowired
 	UserDao userDao;
-	
+
 	@Autowired
 	TeamDao teamDao;
-	
+
+	// RETRIVE
+	////////////////////////////////////////////////////////////////
+	public Team findById(int id) {
+		return teamDao.findById(id).get();
+	}
+
+	// CREATE
+	////////////////////////////////////////////////////////////////
+	/**
+	 * Creates a team and fills it with users from request
+	 * @param name - name of the team
+	 * @param request - Data transfer object between view and controller
+	 */
 	public void addTeam(String name, @Valid AddTeamDto request) {
 
 		// Check if duplicate emails
@@ -44,144 +57,145 @@ public class TeamService {
 		for (Iterator iterator = set.iterator(); iterator.hasNext();) {
 			String email = (String) iterator.next();
 			tempEmails[index] = email;
-			index ++;
+			index++;
 		}
-		
-		
+
 		request.setMemberEmails(tempEmails);
-		
+
 		// Create team
 		Team team = new Team();
 		team.setTitle(request.getTeamName());
-		
+
 		User owner = userDao.findByEmail(name);
 		team.setOwner(owner);
-		
+
 		List<Team> ownsTeams = owner.getOwnsTeams();
 		ownsTeams.add(team);
 		owner.setOwnsTeams(ownsTeams);
-		
+
 		List<User> members = new ArrayList<>();
 		for (String email : request.getMemberEmails()) {
 			User teamMember = userDao.findByEmail(email);
 			members.add(teamMember);
-			
+
 			if (teamMember.getBelongsTeams() != null) {
 				List<Team> belongsTeam = teamMember.getBelongsTeams();
 				belongsTeam.add(team);
-				
-			}else {
+
+			} else {
 				List<Team> belongsTeam = new ArrayList<>();
 				belongsTeam.add(team);
 				teamMember.setBelongsTeams(belongsTeam);
-			}	
+			}
 		}
-		
+
 		userDao.save(owner);
 	}
 
-	public void removeFromTeam(String name, int id) {
-		User user = userDao.findByEmail(name);
-		Team team = teamDao.findById(id).get();
-		
-		user.getBelongsTeams().remove(team);
-		team.getMembers().remove(user);
-		
-		teamDao.save(team);
-		userDao.save(user);
-	}
-
-	public void deleteTeam(String name, int id) throws DontHavePermission {
-		User user = userDao.findByEmail(name);
-		Team team = teamDao.findById(id).get();
-		Role admin = new Role();
-		admin.setName("ADMIN");
-		
-		
-		if (team.getOwner() == user || user.getRoles().contains(admin)) {
-			System.out.println("Deleting team");
-			System.out.println(user.getPassword());
-			/*
-			team.setOwner(null);
-			user.getOwnsTeams().remove(team);
-			userDao.save(user);
-			
-			for (User member : team.getMembers()) {
-				team.getMembers().remove(member);
-				member.getBelongsTeams().remove(team);
-				
-			}
-			*/
-			teamDao.delete(team);
-			
-		}else {
-			throw new DontHavePermission();
-		}
-		
-		
-	}
-
-	public Team findById(int id) {
-		return teamDao.findById(id).get();
-	}
-
+	// UPDATE
+	////////////////////////////////////////////////////////////////
+	/**
+	 * Updates a team and fills it with users from request
+	 * @param name - name of the team
+	 * @param request - Data transfer object between view and controller
+	 */
 	public void updateTeam(int id, String name, @Valid UpdateTeamDto request) {
 		Team team = teamDao.findById(id).get();
 		team.setTitle(request.getTeamName());
-		
-		System.out.println("------------------");
-		System.out.println(request.getMemberEmails().length);
-		
+
 		List<User> members = new ArrayList<>();
 		for (String email : request.getMemberEmails()) {
 			members.add(userDao.findByEmail(email));
 		}
 
 		List<User> oldMembers = team.getMembers();
-		
-		
-		List<User> toRemove= new ArrayList<>();
-				
+
+		// FILTERS USERS TO BE DELETED
+		List<User> toRemove = new ArrayList<>();
+
 		for (User user : oldMembers) {
 			if (members.contains(user)) {
 
-			}else {
+			} else {
 				toRemove.add(user);
-
 			}
 		}
-		
-		
-		List<User> toAdd= new ArrayList<>();
+
+		// FILTERS USERS TO BE ADDED
+		List<User> toAdd = new ArrayList<>();
 		for (User user : members) {
 			if (oldMembers.contains(user)) {
 
-			}else {
+			} else {
 				toAdd.add(user);
 				System.out.println("No");
 			}
 		}
-		System.out.println(toAdd);
-		
-		System.out.println(toRemove);
-		System.out.println(toRemove.size());
+
+		// REMOVES USERS
 		for (User user : toRemove) {
 			team.getMembers().remove(user);
 			user.getBelongsTeams().remove(team);
-			//userDao.save(user);
+			// userDao.save(user);
 		}
-		
+
+		// ADDS USERS
 		for (User user : toAdd) {
 			team.getMembers().add(user);
-			//user.getBelongsTeams().add(team);
+			// user.getBelongsTeams().add(team);
 		}
-		
-		System.out.println(team.getMembers().size());
-		
+
 		teamDao.save(team);
-		
+
 	}
 
-	
-	
+	// DELETE
+	////////////////////////////////////////////////////////////////
+	/**
+	 * Removes user from a team
+	 * @param name - email of the user
+	 * @param id - id of the team
+	 */
+	public void removeFromTeam(String name, int id) {
+		User user = userDao.findByEmail(name);
+		Team team = teamDao.findById(id).get();
+
+		user.getBelongsTeams().remove(team);
+		team.getMembers().remove(user);
+
+		teamDao.save(team);
+		userDao.save(user);
+	}
+
+	/**
+	 * Deletes a team
+	 * @param name - user email 
+	 * @param id - id of the team
+	 * @throws DontHavePermission - if user isnt the owner or ADMIN throws error
+	 */
+	public void deleteTeam(String name, int id) throws DontHavePermission {
+		User user = userDao.findByEmail(name);
+		Team team = teamDao.findById(id).get();
+		Role admin = new Role();
+		admin.setName("ADMIN");
+
+		if (team.getOwner() == user || user.getRoles().contains(admin)) {
+			System.out.println("Deleting team");
+			System.out.println(user.getPassword());
+			/*
+			 * team.setOwner(null); user.getOwnsTeams().remove(team); userDao.save(user);
+			 * 
+			 * for (User member : team.getMembers()) { team.getMembers().remove(member);
+			 * member.getBelongsTeams().remove(team);
+			 * 
+			 * }
+			 */
+			teamDao.delete(team);
+
+		} else {
+			throw new DontHavePermission();
+		}
+
+	}
+
 }

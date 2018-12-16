@@ -4,6 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This is to be removed. 
+ * Used to test basic chart templates in html views. 
+ * @author Bojan
+ *
+ */
+@Deprecated
 public class CanvasjsChartData {
 	 
 	static Map<Object,Object> map = null;

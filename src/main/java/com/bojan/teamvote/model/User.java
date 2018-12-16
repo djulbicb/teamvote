@@ -29,6 +29,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Application user. Used for login. User must be logged in to access app.
+ * User owns Questions, Teams, Votes, Roles.
+ * User can belong to a team
+ * @author Bojan
+ */
 @Entity
 public class User implements Serializable {
 	@Id

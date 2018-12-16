@@ -40,6 +40,9 @@ public class IndexController {
 	@Autowired
 	QuestionService questionService;
 	
+	//	INDEX
+	////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Shows all public questions. Anyone who is logged in can vote on them. If user already voted show statistics
 	 * @param model
@@ -56,6 +59,11 @@ public class IndexController {
 		return "views/index";
 	}
 
+	//	LOGIN AND REGISTER
+	////////////////////////////////////////////////////////////////
+	/**
+	 * Returns login Page
+	 */
 	@GetMapping("/login")
 	public String getLogin(Model model, @RequestParam(name = "register", required = false) String register) {
 		if (register != null) {
@@ -65,6 +73,9 @@ public class IndexController {
 		return "views/login";
 	}
 
+	/**
+	 * Returns register page
+	 */
 	@GetMapping("/register")
 	public String getRegister(Model model) {
 		User user = new User();
@@ -73,27 +84,15 @@ public class IndexController {
 		return "views/register";
 	}
 	
-	@GetMapping("/test")
-	public String test(Model model, HttpServletRequest request) {
-		String rootDirectory = request.getSession().getServletContext().getRealPath("/img/users");
-		Path path = Paths.get(rootDirectory);
-	        
-	        if (!Files.exists(path)) {
-	            try {
-	                Files.createDirectories(path);
-	            } catch (IOException e) {
-	                //fail to create directory
-	                e.printStackTrace();
-	            }
-	        }
-
-		
-		return "views/test";
-	}
-	
-
+	/**
+	 * Takes in form information and proceeds to save new user
+	 */
 	@PostMapping("/register")
-	public String postRegister(@Valid @ModelAttribute(name = "user") User user, BindingResult result, Model model, HttpServletRequest request) {
+	public String postRegister(
+			@Valid @ModelAttribute(name = "user") User user, 
+			BindingResult result, Model model, 
+			HttpServletRequest request) {
+		
 		// Validate - Check if any errors in form, or if user already exists
 		if (result.hasErrors()) {
 			return "views/register";
@@ -156,13 +155,43 @@ public class IndexController {
 		 
 		return "redirect:/login?register";
 	}
+	
+	//	UTILITY
+	////////////////////////////////////////////////////////////////
+	@Deprecated
+	@GetMapping("/test")
+	public String test(Model model, HttpServletRequest request) {
+		String rootDirectory = request.getSession().getServletContext().getRealPath("/img/users");
+		Path path = Paths.get(rootDirectory);
+	        
+	        if (!Files.exists(path)) {
+	            try {
+	                Files.createDirectories(path);
+	            } catch (IOException e) {
+	                //fail to create directory
+	                e.printStackTrace();
+	            }
+	        }
 
+		
+		return "views/test";
+	}
+	
+	/**
+	 * If user hasnt uploaded a image during registration assign random
+	 * @return
+	 */
 	private String getRandomAvatarImage() {
 		Random rnd = new Random();
 		int num = rnd.nextInt(3) +1;
 		return "avatar"+num+".png";
 	}
 
+	/**
+	 * Returns the extension of the uploaded image
+	 * @param filename
+	 * @return
+	 */
 	public String getExtensionOfFile(String filename) {
 		int lastIndexOf = filename.lastIndexOf(".");
 		return filename.substring(lastIndexOf, filename.length());

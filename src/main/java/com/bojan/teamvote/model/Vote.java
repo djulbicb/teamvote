@@ -14,7 +14,10 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+/**
+ * Vote entity holds information about user who voted on a question. Only one vote for user per question is available
+ * @author Bojan
+ */
 @Entity
 public class Vote {
 	@Id

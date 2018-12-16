@@ -24,6 +24,9 @@ public class RoleService {
 	@Autowired
 	RoleDao roleDao;
 
+	//	CREATE
+	////////////////////////////////////////////////////////////////
+	
 	public void addRole(String name) {
 		Role role = new Role();
 		role.setName(name);

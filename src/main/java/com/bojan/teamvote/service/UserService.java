@@ -30,6 +30,14 @@ public class UserService {
 	@Autowired
 	RoleDao roleDao;
 
+	@Autowired
+	BCryptPasswordEncoder encoder;
+	
+	@Autowired
+	SettingDao settingDao;
+	
+	//	RETRIVE
+	////////////////////////////////////////////////////////////////
 	
 	public User findById(int id) {
 		return userDao.findById(id).get();
@@ -39,11 +47,23 @@ public class UserService {
 		return userDao.findAll();
 	}
 	
-	@Autowired
-	BCryptPasswordEncoder encoder;
+	public User findByEmail(String email) {
+		return userDao.findByEmail(email);
+		
+	}
+
+	public List<User> findUsers(String firstName){
+		return userDao.findByFirstNameLike(firstName);
+	}
 	
-	@Autowired
-	SettingDao settingDao;
+	public List<User> findUsersByFilters(String email, String firstName, String lastName) {
+		List<User> users = userDao.findUsersByFilters(email, firstName, lastName);
+		System.out.println(users);
+		return users;
+	}
+	
+	//	CREATE
+	////////////////////////////////////////////////////////////////
 	
 	public void addUser(User user) {
 		
@@ -85,6 +105,9 @@ public class UserService {
 		userDao.save(user);
 	}
 	
+	//	UPDATE
+	////////////////////////////////////////////////////////////////
+	
 	public User updateUser(String email, User user) {
 		User dbUser = userDao.findByEmail(email);
 		dbUser.setFirstName(user.getFirstName());
@@ -99,29 +122,6 @@ public class UserService {
 		return userDao.save(dbUser);
 	}
 	
-	public boolean ifExistsByName(String username) {
-		return userDao.ifExistsByName(username);
-	}
-	
-	public boolean ifExistsByEmail(String email) {
-		return userDao.ifExistsByEmail(email);
-	}
-
-	public User findByEmail(String email) {
-		return userDao.findByEmail(email);
-		
-	}
-
-	public List<User> findUsers(String firstName){
-		return userDao.findByFirstNameLike(firstName);
-	}
-	
-	public List<User> findUsersByFilters(String email, String firstName, String lastName) {
-		List<User> users = userDao.findUsersByFilters(email, firstName, lastName);
-		System.out.println(users);
-		return users;
-	}
-
 	public void updateSetting(@Valid Setting setting, String name) {
 		User user = userDao.findByEmail(name);
 		Setting dbSetting = user.getSetting();
@@ -132,10 +132,29 @@ public class UserService {
 		userDao.save(user);
 	}
 
+	//	DELETE
+	////////////////////////////////////////////////////////////////
+	
 	public void deleteUser(String name) {
 		User user = userDao.findByEmail(name);
 		userDao.delete(user);
 	}
+	
+	//	UTILITY
+	////////////////////////////////////////////////////////////////
+	
+	public boolean ifExistsByName(String username) {
+		return userDao.ifExistsByName(username);
+	}
+	
+	public boolean ifExistsByEmail(String email) {
+		return userDao.ifExistsByEmail(email);
+	}
+
+	
+
+	
+	
 
 
 }

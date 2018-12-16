@@ -21,6 +21,7 @@ import com.bojan.teamvote.model.Team;
 import com.bojan.teamvote.model.User;
 import com.bojan.teamvote.model.dto.AddQuestionDto;
 import com.bojan.teamvote.model.enums.QuestionState;
+import com.bojan.teamvote.util.EmailUtil;
 
 @Service
 @Transactional
@@ -35,6 +36,33 @@ public class QuestionService {
 	@Autowired
 	TeamDao teamDao;
 
+	@Autowired
+	EmailUtil emailUtil;
+	
+	//	RETRIVE
+	////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Returns question based on the question id
+	 * @param questionId
+	 * @return
+	 */
+	public Question findById(int questionId) {
+		Question question = questionDao.findById(questionId).get();
+		return question;
+	}
+	
+	/**
+	 * Returns filtered question that are current active
+	 * @return
+	 */
+	public List<Question> findAllPublicQuestions(){
+		return questionDao.findAllQuestionsByState(QuestionState.ACTIVE);
+	}
+	
+	//	CREATE
+	////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Creates a private question for each selected team in the addQuestion.html form.
 	 * 
@@ -76,12 +104,19 @@ public class QuestionService {
 		question.setOwner(user);
 		user.getAskQuestions().add(question);
 		
-		if (request.getIsIncludeMe()) {
+		if (request.getIsIncludeMe() && !question.getVoters().contains(user)) {
 			question.getVoters().add(user);
 			user.getVoteQuestions().add(question);
 		}
-
-		questionDao.save(question);
+		
+		Question q = questionDao.save(question);
+		
+		/*
+		System.out.println("------------------------------");
+		System.out.println(q.getVoters());
+		for (User toSend : q.getVoters()) {
+			emailUtil.sendQuestionEmail(q, toSend.getEmail());
+		}*/
 	}
 
 	/**
@@ -127,13 +162,19 @@ public class QuestionService {
 				question.setOwner(user);
 				user.getAskQuestions().add(question);
 
-				if (request.getIsIncludeMe()) {
+				if (request.getIsIncludeMe() && !question.getVoters().contains(user)) {
 					question.getVoters().add(user);
 					user.getVoteQuestions().add(question);
 				}
+					
+				Question q = questionDao.save(question);
 				
-				questionDao.save(question);
-				
+				/*
+				System.out.println("------------------------------");
+				System.out.println(q.getVoters());
+				for (User toSend : q.getVoters()) {
+					emailUtil.sendQuestionEmail(q, toSend.getEmail());
+				}*/
 			}
 			
 		}
@@ -167,9 +208,34 @@ public class QuestionService {
 		question.setOwner(user);
 		user.getAskQuestions().add(question);
 
-		questionDao.save(question);
+		Question q = questionDao.save(question);
+		
+		for (User toSend : question.getVoters()) {
+			emailUtil.sendQuestionEmail(q, toSend.getEmail());
+		}
+		
 	}
-
+	
+	//	DELETE
+	////////////////////////////////////////////////////////////////
+	/**
+	 * Deletes a question based on the id
+	 * @param name - user email. TODO: To be added security check
+	 * @param id - question id
+	 */
+	public void deleteQuestion(String name, int id) {
+		Question q = questionDao.findById(id).get();
+		questionDao.delete(q);
+	}
+	
+	//	UTILITY
+	////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Used on the data transfer object. Convert String[] into int[] 
+	 * @param array
+	 * @return
+	 */
 	List<Integer> turnStringToIntArray(String[] array) {
 		List<Integer> listNumbers = new ArrayList<>();
 		for (String string : array) {
@@ -184,15 +250,12 @@ public class QuestionService {
 		return listNumbers;
 	}
 
-	public Question findById(int questionId) {
-		Question question = questionDao.findById(questionId).get();
-		return question;
-	}
-	
-	public List<Question> findAllPublicQuestions(){
-		return questionDao.findAllQuestionsByState(QuestionState.ACTIVE);
-	}
-
+	/**
+	 * Checks if user already voted
+	 * @param principal - user email
+	 * @param q - Question
+	 * @return
+	 */
 	public boolean checkIfUserVoted(String principal, Question q) {
 		User user = userDao.findByEmail(principal);
 		System.out.println(q.getVotedVoters());
@@ -204,5 +267,4 @@ public class QuestionService {
 		
 		return false;
 	}
-
 }

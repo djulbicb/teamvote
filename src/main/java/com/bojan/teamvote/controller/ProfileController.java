@@ -37,6 +37,15 @@ public class ProfileController {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	HttpServletRequest request;
+
+	// RETRIVE VIEWS
+	////////////////////////////////////////////////////////////////
+
+	/**
+	 * Shows main user profile page
+	 */
 	@GetMapping("")
 	public String getProfile(Model model, Principal principal) {
 		User user = userService.findByEmail(principal.getName());
@@ -45,47 +54,20 @@ public class ProfileController {
 		model.addAttribute("user", user);
 		return "views/profile/profile";
 	}
-	
 
+	/**
+	 * Shows user privacy page. If user can be added to a team and receive emails
+	 */
 	@GetMapping("privacy")
 	public String getPrivacySetting(Model model, Principal principal) {
-		Setting settings =  userService.findByEmail(principal.getName()).getSetting();
+		Setting settings = userService.findByEmail(principal.getName()).getSetting();
 		model.addAttribute("request", settings);
 		return "views/profile/privacy";
 	}
-	
-	@GetMapping("deleteProfile")
-	public String getDeleteProfile(Model model, Principal principal) {
-		return "views/profile/deleteProfile";
-	}
-	
-	@PostMapping("deleteProfile")
-	public String postDeleteProfile(Model model, Principal principal) {
-		userService.deleteUser(principal.getName());
-		request.getSession().invalidate();
-		return "redirect:/";
-	}
-	
-	@PostMapping("updateSettings")
-	public String postUpdateSettings(
-			Model model,
-			@Valid @ModelAttribute("request") Setting setting,
-			BindingResult result,
-			Principal principal
-			) {
-		if (result.hasErrors()) {
-			for (ObjectError err : result.getAllErrors()) {
-				System.out.println(err);
-			}
-			model.addAttribute("request", setting);
-			return "views/profile/privacy";
-		}
-		
-		userService.updateSetting(setting, principal.getName());
-		
-		return "redirect:/profile?updated";
-	}
-	
+
+	/**
+	 * Shows questions user has voted on
+	 */
 	@GetMapping("voted")
 	public String getVoted(Model model, Principal principal) {
 		User user = userService.findByEmail(principal.getName());
@@ -95,6 +77,34 @@ public class ProfileController {
 		return "views/profile/voted";
 	}
 
+
+	// DELETE PROFILE
+	////////////////////////////////////////////////////////////////
+
+	/**
+	 * Shows delete profile warning page
+	 */
+	@GetMapping("deleteProfile")
+	public String getDeleteProfile(Model model, Principal principal) {
+		return "views/profile/deleteProfile";
+	}
+	
+	/**
+	 * Proceeds to delete user and logs out
+	 */
+	@PostMapping("deleteProfile")
+	public String postDeleteProfile(Model model, Principal principal) {
+		userService.deleteUser(principal.getName());
+		request.getSession().invalidate();
+		return "redirect:/";
+	}
+
+	// UPDATE PROFILE
+	////////////////////////////////////////////////////////////////
+
+	/**
+	 * Shows update user information page
+	 */
 	@GetMapping("update")
 	public String getUserInfo(Model model, Principal principal) {
 		User user = userService.findByEmail(principal.getName());
@@ -103,10 +113,10 @@ public class ProfileController {
 		model.addAttribute("user", user);
 		return "views/profile/update";
 	}
-
-	@Autowired
-	HttpServletRequest request;
-
+	
+	/**
+	 * Proceeds to update information
+	 */
 	@PostMapping("update")
 	public String postUserInfo(Model model, Principal principal, @Valid @ModelAttribute("user") User user, BindingResult result) {
 
@@ -147,22 +157,51 @@ public class ProfileController {
 			} catch (Exception e) {
 				throw new RuntimeException("Product image saving failed", e);
 			}
-		} 
+		}
 
 		// END: Save image file
 
-		userService.updateUser(principal.getName(),user);
+		userService.updateUser(principal.getName(), user);
 
 		return "redirect:/profile";
 	}
-	
 
+	/**
+	 * Updates user settings
+	 */
+	@PostMapping("updateSettings")
+	public String postUpdateSettings(Model model, @Valid @ModelAttribute("request") Setting setting, BindingResult result, Principal principal) {
+		if (result.hasErrors()) {
+			for (ObjectError err : result.getAllErrors()) {
+				System.out.println(err);
+			}
+			model.addAttribute("request", setting);
+			return "views/profile/privacy";
+		}
+
+		userService.updateSetting(setting, principal.getName());
+
+		return "redirect:/profile?updated";
+	}
+
+	// UTILITY
+	////////////////////////////////////////////////////////////////
+	
+	/**
+	 * If user hasnt uploaded a image during registration assign random
+	 * @return
+	 */
 	private String getRandomAvatarImage() {
 		Random rnd = new Random();
-		int num = rnd.nextInt(3) +1;
-		return "avatar"+num+".png";
+		int num = rnd.nextInt(3) + 1;
+		return "avatar" + num + ".png";
 	}
 	
+	/**
+	 * Returns the extension of the uploaded image
+	 * @param filename
+	 * @return
+	 */
 	public String getExtensionOfFile(String filename) {
 		int lastIndexOf = filename.lastIndexOf(".");
 		return filename.substring(lastIndexOf, filename.length());

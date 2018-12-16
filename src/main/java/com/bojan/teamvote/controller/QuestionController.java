@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,11 @@ public class QuestionController {
 	@Autowired
 	QuestionService questionService;
 
+	// RETRIVE VIEWS
+	////////////////////////////////////////////////////////////////
+	/**
+	 * Shows all question user has created
+	 */
 	@GetMapping("showAskedQuestions")
 	public String getShowAskedQuestions(Model model, Principal principal) {
 		User user = userService.findByEmail(principal.getName());
@@ -40,6 +46,11 @@ public class QuestionController {
 		return "views/profile/showAskedQuestions";
 	}
 
+	// CREATE
+	////////////////////////////////////////////////////////////////
+	/**
+	 * Shows add question form view
+	 */
 	@GetMapping("addQuestion")
 	public String getAddQuestion(Model model, Principal principal) {
 
@@ -55,6 +66,9 @@ public class QuestionController {
 		return "views/profile/addQuestion";
 	}
 
+	/**
+	 * Saves the form data as a new question in database
+	 */
 	@PostMapping("addQuestion")
 	public String postAddQuestion(@Valid @ModelAttribute("request") AddQuestionDto request, BindingResult results, Model model, Principal principal) {
 		User user = userService.findByEmail(principal.getName());
@@ -92,4 +106,19 @@ public class QuestionController {
 		System.out.println("Question saved");
 		return "redirect:/profile?addQuestion";
 	}
+	
+	// DELETE
+	////////////////////////////////////////////////////////////////
+
+	/**
+	 * Deletes a question
+	 */
+	@PostMapping("deleteQuestion/{id}")
+	public String postDeleteQuestion(@PathVariable("id") int id, Model model, Principal principal) {
+		
+		questionService.deleteQuestion(principal.getName(), id);
+		
+		return "redirect:/profile/showAskedQuestions";
+	}
+	
 }

@@ -29,6 +29,9 @@ import org.hibernate.validator.constraints.Length;
 import com.bojan.teamvote.model.enums.QuestionState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/*
+ * User creates question on which other users can vote
+ */
 @Entity
 public class Question implements Serializable{
 
